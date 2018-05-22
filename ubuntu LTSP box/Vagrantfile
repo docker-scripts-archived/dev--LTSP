@@ -1,8 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
 
 Vagrant.configure("2") do |config|
- 
+  
   config.vm.box = "ubuntu/trusty64"
+	
+  config.vm.network "public_network", ip: "192.168.1.17", netmask: "255.255.255.0", virtualbox_intnet: "eno1"
+  
+  config.vm.provider "virtualbox" do |virtualbox|
+	# Enable promiscuous mode
+  	virtualbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
 
-  config.vm.network "public_network", ip: "192.168.1.17" netmask:  		"255.255.255.0", virtualbox_intnet: "eno1"
+  end
+
+  config.vm.provision "shell", inline: $LTSP_Installer_script
 
 end
+
+$LTSP_Installer_script = <<SCRIPT
+#!/bin/bash
+apt-get --yes update
+apt-get --yes install epoptes epoptes-client
+gpasswd -a ${SUDO_USER:-$USER} epoptes
+apt-get --yes --install-recommends install dnsmasq ltsp-server ldm-ubuntu-theme
+export DEBIAN_FRONTEND=noninteractive
+apt-get -yq --yes --install-recommends install ltsp-client
+echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
+/usr/share/ltsp/update-kernels
+ltsp-config lts.conf
+ltsp-config dnsmasq
+#apt-get --yes install edubuntu-desktop
+#apt-get --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
+ltsp-update-image --cleanup /
+
+SCRIPT
