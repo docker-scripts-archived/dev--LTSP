@@ -3,13 +3,13 @@
 
 Vagrant.configure("2") do |config|
   
-  config.vm.box = "ubuntu/trusty64"
+  config.vm.box = "ubuntu/bionic64"
 	
-  config.vm.network "public_network", ip: "192.168.1.17", netmask: "255.255.255.0", virtualbox_intnet: "eno1"
+	config.vm.network "public_network", ip: "192.168.1.18", netmask: "255.255.255.0", virtualbox_intnet: "wlo1"
   
   config.vm.provider "virtualbox" do |virtualbox|
-	# Enable promiscuous mode
-  	virtualbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
+	  # Enable promiscuous mode
+  	  virtualbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
 
   end
 
@@ -19,18 +19,45 @@ end
 
 $LTSP_Installer_script = <<SCRIPT
 #!/bin/bash
+
+#Updating packages
+
 apt-get --yes update
-apt-get --yes install epoptes epoptes-client
-gpasswd -a ${SUDO_USER:-$USER} epoptes
-apt-get --yes --install-recommends install dnsmasq ltsp-server ldm-ubuntu-theme
+apt-get --yes upgrade
+
+#Installing dependencies
+
+apt-get --yes --install-recommends install dnsmasq ldm-ubuntu-theme
+apt-get --yes --install-recommends install ltsp-server
 export DEBIAN_FRONTEND=noninteractive
 apt-get -yq --yes --install-recommends install ltsp-client
+apt-get --yes install epoptes epoptes-client
+
+
+#Adding vagrant user to group epoptes
+
+gpasswd -a ${SUDO_USER:-$USER} epoptes
+
+#Updating kernel
+
 echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 /usr/share/ltsp/update-kernels
-ltsp-config lts.conf
+
+#configure dnsmasq
+
 ltsp-config dnsmasq
-#apt-get --yes install edubuntu-desktop
-#apt-get --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
+
+#Creating lts.conf
+
+ltsp-config lts.conf
+
+#Installing additional software
+
+apt-get --yes install edubuntu-desktop
+apt-get --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
+
+#Creating client image
+
 ltsp-update-image --cleanup /
 
 SCRIPT
