@@ -13,7 +13,7 @@ Vagrant.configure("2") do |config|
 
   end
 
-  config.vm.provision "shell", path: "LTSP_Installer_script.sh"
+  config.vm.provision "shell", path: "install.sh"
 
 end
 
