@@ -36,6 +36,12 @@ ltsp-config lts.conf
 apt-get --yes install edubuntu-desktop
 apt-get --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
 
+#Installing ltsp-server
+
+add-apt-repository ppa:ts.sch.gr
+apt-get --yes update
+apt-get --yes install ltsp-manager
+
 #Creating client image
 
 ltsp-update-image --cleanup /
