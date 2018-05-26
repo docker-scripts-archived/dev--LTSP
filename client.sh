@@ -16,7 +16,6 @@ create_client(){
 	VBoxManage createhd --filename "$clientname.vdi" --size 1
 	VBoxManage storagectl "$clientname" --name "IDE Controller" --add ide
 	VBoxManage startvm "$clientname"
-
 }
 
 control_client(){
