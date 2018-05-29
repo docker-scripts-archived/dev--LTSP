@@ -50,26 +50,25 @@ ltsp-update-image --cleanup /
 sed -i "s/dhcp-range=192.168.67.20,192.168.67.250,8h/dhcp-range=192.168.1.20,192.168.1.250,8h/g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
 service dnsmasq restart	
 
-#Reading setting.sh file
-cd /vagrant
-read -a arr < settings.sh
-echo ${arr[0]} 
-var=${arr[0]}
-response=($(echo "$var" | tr '=' '\n'))
+#Deleting file if already exists
+if [[ -e /var/lib/dhcp/dhclient.leases ]]; then
+	rm /var/lib/dhcp/dhclient.leases
+fi
+
+#Manual DHCP-Discover of DHCP Server
+timeout 9 dhclient
 
 #Setting mode of operation of ltsp server
-if [ "${response[1]}" == "Yes" ] || [ "${response[1]}" == "yes" ]; then
-	echo "LTSP server will be in standalone mode of operation"	
-	echo "LTSP server will provide DHCP services.."
-	sed -i "15 s/dhcp-range=10.0.2.0,proxy/#dhcp-range=10.0.2.0,proxy/g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
-	sed -i "16 s/dhcp-range=192.168.1.0,proxy/#dhcp-range=192.168.1.0,proxy/g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
-	service dnsmasq restart
-elif [ "${response[1]}" == "No" ] || [ "${response[1]}" == "no" ]; then
+if [[ -s /var/lib/dhcp/dhclient.leases ]]; then
 	echo "LTSP server will be in Non-standalone mode of operation"	
 	echo "There is an existing DHCP server running"
 	echo "LTSP server won't provide DHCP services.."
 	sed -i "15,16 s/#//g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
-	service dnsmasq restart
 else
-	echo "Invalid response provided in settings.sh"
+	echo "LTSP server will be in standalone mode of operation"	
+	echo "LTSP server will provide DHCP services.."
+	sed -i "15 s/dhcp-range=10.0.2.0,proxy/#dhcp-range=10.0.2.0,proxy/g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
+	sed -i "16 s/dhcp-range=192.168.1.0,proxy/#dhcp-range=192.168.1.0,proxy/g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
 fi
+
+service dnsmasq restart
