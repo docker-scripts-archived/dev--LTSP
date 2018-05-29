@@ -26,7 +26,6 @@ ltsp-config dnsmasq
 ltsp-config lts.conf
 
 #Installing Edubuntu programs
-apt --yes install edubuntu-desktop
 apt --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
 
 #Installing ltsp-manager
