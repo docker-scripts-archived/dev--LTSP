@@ -39,24 +39,22 @@ ltsp-update-image --cleanup /
 
 #source setting.sh
 source /vagrant/settings.sh
-NET=$(echo $NETWORK | cut -d'.' -f 3)
 
 #setting dhcp-range
-sed -i 's/dhcp-range=192.168.67.20,192.168.67.250,8h/dhcp-range=192.168.'"$NET"'.20,192.168.'"$NET"'.250,8h/g' /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
-
+sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/8h$/ c dhcp-range=${NETWORK}.20,${NETWORK}.250,8h"
 
 #Setting mode of operation of ltsp server
-if [ "$STANDALONE" == "Yes" ] || [ "$STANDALONE" == "yes" ]; then
+if [[ ${STANDALONE,,} == "yes" ]]; then
 	echo "LTSP server will be in standalone mode of operation"	
-	echo "LTSP server will provide DHCP services.."
-	sed -i "15 s/dhcp-range=10.0.2.0,proxy/#dhcp-range=10.0.2.0,proxy/g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
-	sed -i '16 s/dhcp-range=192.168.1.0,proxy/#dhcp-range=192.168.1.0,proxy/g' /etc/dnsmasq.d/ltsp-server-dnsmasq.conf
-elif [ "$STANDALONE" == "No" ] || [ "$STANDALONE" == "no" ]; then
+	echo "LTSP server will provide DHCP services.."	
+	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/192.168.1.0,proxy$/ c #dhcp-range=${NETWORK}.0,proxy"
+	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/10.0.2.0,proxy$/ c #dhcp-range=10.0.2.0,proxy"
+elif [[ ${STANDALONE,,} == "no" ]]; then
 	echo "LTSP server will be in Non-standalone mode of operation"	
 	echo "There is an existing DHCP server running"
 	echo "LTSP server won't provide DHCP services.."
-	sed -i "15,16 s/#//g" /etc/dnsmasq.d/ltsp-server-dnsmasq.conf	
-	sed -i '16 s/dhcp-range=192.168.1.0,proxy/dhcp-range=192.168.'"$NET"'.0,proxy/g' /etc/dnsmasq.d/ltsp-server-dnsmasq.conf	
+	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/192.168.1.0,proxy$/ c dhcp-range=${NETWORK}.0,proxy"
+	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/10.0.2.0,proxy$/ c dhcp-range=10.0.2.0,proxy"
 else
 	echo "Invalid response provided in settings.sh"
 fi
