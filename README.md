@@ -24,8 +24,6 @@ Then you to configure the `settings.sh` script. You can set mode of operation, N
 
 User can put yes or no depending upon the mode of operation. Also you can put network address and LAN IP. Settings will be loaded by `Vagrantfile` and `install.sh` Then you can do a `vagrant up` and Vagrant will automatically install LTSP with the help of provisioning script. 
 
-*Note* - If you have 2 network interfaces then after doing `vagrant up` it will ask which interface you want the vagrant box to bridge with. Selected the one which has internet connection with it. 
-
 ## Client Installation
 We can make a client with the help of virtualbox
 
