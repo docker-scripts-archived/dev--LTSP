@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 load "settings.sh"
-INTERFACE = %x(  route | awk ' /'default'/ {print $8; exit} ' )
+INTERFACE = %x(  ip route | grep default | cut -d' ' -f5 )
 
 Vagrant.configure("2") do |config|
   
