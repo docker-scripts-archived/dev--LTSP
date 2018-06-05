@@ -9,11 +9,16 @@ export DEBIAN_FRONTEND=noninteractive
 apt -yq --yes install iptables-persistent
 
 # fetching interface name
-INTERNET=$(ifconfig | grep -m 1 RUNNING | cut -d':' -f1)
-LOCAL=$(ifconfig | grep -m 2 RUNNING | cut -d':' -f1 | tail -n1)
+INTERNET=$(ip route | grep default | cut -d' ' -f5)
+LOCAL=$(ip route | grep -v default | cut -d' ' -f3 | grep -v $INTERNET | head -1)
 
 # configuration
 echo "dhcp-range=tftp,${NETWORK}.250,${NETWORK}.254" >> /etc/dnsmasq.conf 
+
+# restarting service	
+service dnsmasq restart
+
+# Enable ip forwarding
 echo "net.ipv4.ip_forward=1" > /etc/sysctl.conf
 
 # deleting existing rules
@@ -29,6 +34,3 @@ iptables -A FORWARD -i $LOCAL -o $INTERNET -j ACCEPT
 
 # saving IP tables rules
 iptables-save > /etc/iptables.rules
-
-# restarting service	
-service dnsmasq restart
