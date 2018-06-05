@@ -6,7 +6,7 @@ source /vagrant/settings.sh
 apt --yes update
 apt --yes --install-recommends install dnsmasq
 export DEBIAN_FRONTEND=noninteractive
-apt -yq --yes install iptables-persistent
+apt --yes install iptables-persistent
 
 # fetching interface name
 INTERNET=$(ip route | grep default | cut -d' ' -f5)
