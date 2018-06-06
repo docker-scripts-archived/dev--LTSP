@@ -5,15 +5,14 @@ source /vagrant/settings.sh
 # installation
 apt --yes update
 apt --yes --install-recommends install dnsmasq
-export DEBIAN_FRONTEND=noninteractive
-apt --yes install iptables-persistent
+DEBIAN_FRONTEND=noninteractive apt --yes install iptables-persistent
 
 # fetching interface name
 INTERNET=$(ip route | grep default | cut -d' ' -f5)
 LOCAL=$(ip route | grep -v default | cut -d' ' -f3 | grep -v $INTERNET | head -1)
 
 # configuration
-echo "dhcp-range=tftp,${NETWORK}.250,${NETWORK}.254" >> /etc/dnsmasq.conf 
+echo "dhcp-range=${NETWORK}.50,${NETWORK}.150,12h" >> /etc/dnsmasq.conf 
 
 # restarting service	
 service dnsmasq restart
