@@ -2,12 +2,34 @@
 
 source /vagrant/settings.sh
 
-#installation
+# installation
 apt --yes update
 apt --yes --install-recommends install dnsmasq
+DEBIAN_FRONTEND=noninteractive apt --yes install iptables-persistent
 
-#configuration
-echo "dhcp-range=tftp,${NETWORK}.250,${NETWORK}.254" >> /etc/dnsmasq.conf 
+# fetching interface name
+INTERNET=$(ip route | grep default | cut -d' ' -f5)
+LOCAL=$(ip route | grep -v default | cut -d' ' -f3 | grep -v $INTERNET | head -1)
+
+# configuration
+echo "dhcp-range=${NETWORK}.50,${NETWORK}.150,12h" >> /etc/dnsmasq.conf 
+
+# restarting service	
 service dnsmasq restart
-	
 
+# Enable ip forwarding
+echo "net.ipv4.ip_forward=1" > /etc/sysctl.conf
+
+# deleting existing rules
+iptables --flush
+iptables --table nat --flush
+iptables --delete-chain
+iptables --table nat --delete-chain
+
+# IP masquerading
+iptables -t nat -A POSTROUTING -o $INTERNET -j MASQUERADE
+iptables -A FORWARD -i $INTERNET -o $LOCAL -m state --state RELATED,ESTABLISHED -j ACCEPT
+iptables -A FORWARD -i $LOCAL -o $INTERNET -j ACCEPT
+
+# saving IP tables rules
+iptables-save > /etc/iptables.rules
