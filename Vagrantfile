@@ -1,11 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
+load "settings.sh"
+INTERFACE = (%x(  ip route | grep -m 1 default | cut -d' ' -f5 )).strip
 
 Vagrant.configure("2") do |config|
   
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.box = "fujimakishouten/debian-buster64"
 	
-  config.vm.network "public_network", ip: "192.168.1.18", netmask: "255.255.255.0", virtualbox_intnet: "eno1"
+  config.vm.network "public_network", ip: LAN_IP, bridge: INTERFACE, netmask: "255.255.255.0"
   
   config.vm.provider "virtualbox" do |virtualbox|
 	  # Enable promiscuous mode
@@ -13,9 +15,10 @@ Vagrant.configure("2") do |config|
 
   end
 
-  config.vm.provision "shell", path: "LTSP_Installer_script.sh"
+  config.vm.provision "shell", path: "install.sh"
 
 end
+
 
 
 
