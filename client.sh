@@ -1,7 +1,7 @@
 #!/bin/bash
 #################################################
-#  Simple script that creates LTSP clients 	#
-#  These clients can only boot from network	#
+#  Simple script that creates LTSP clients 	    #
+#  These clients can only boot from network	    #
 #  LTSP server is running before running script	#
 #################################################
 
@@ -49,5 +49,5 @@ if [ "$1" == "" ]; then
 fi
 
 if [ "$1" == "-h" ] || [ "$1" == "--help" ]; then
-	usage
+  usage
 fi
