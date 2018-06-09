@@ -27,6 +27,11 @@ ltsp-config lts.conf
 # Creating client image
 ltsp-update-image --cleanup /
 
+# enabling password authentication 
+sed -i /etc/ssh/sshd_config -e \
+	"/^PasswordAuth/ c PasswordAuthentication yes" 
+service ssh restart
+
 # source setting.sh
 source /vagrant/settings.sh
 
