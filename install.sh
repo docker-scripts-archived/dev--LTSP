@@ -37,22 +37,23 @@ source /vagrant/settings.sh
 
 # setting dhcp-range
 sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e \
- "/^dhcp-range=.*,8h\$/ c dhcp-range=${NETWORK}.20,${NETWORK}.250,8h"
+    "/^dhcp-range=.*,8h\$/ c dhcp-range=${NETWORK}.20,${NETWORK}.250,8h"
 
 # Setting mode of operation of ltsp server
 if [[ ${STANDALONE,,} == "yes" ]]; then
 	echo "LTSP server will be in standalone mode of operation"	
 	echo "LTSP server will provide DHCP services.."	
-	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/192.168.1.0,proxy\$/ \
-c #dhcp-range=${NETWORK}.0,proxy" -e "/10.0.2.0,proxy\$/ c #dhcp-range=10.0.2.0,proxy"
+	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
+	    -e "/192.168.1.0,proxy\$/ c #dhcp-range=${NETWORK}.0,proxy" \
+	    -e "/10.0.2.0,proxy\$/ c #dhcp-range=10.0.2.0,proxy"
 else
 	echo "LTSP server will be in Non-standalone mode of operation"	
 	echo "There is an existing DHCP server running"
 	echo "LTSP server won't provide DHCP services.."
 	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
--e "/^#dhcp-range=.*,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
+        -e "/^#dhcp-range=.*,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
 	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
--e "/^#dhcp-range=.*,proxy\$/ c dhcp-range=10.0.2.0,proxy"
+        -e "/^#dhcp-range=.*,proxy\$/ c dhcp-range=10.0.2.0,proxy"
 fi
 
 service dnsmasq restart
