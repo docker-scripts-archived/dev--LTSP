@@ -7,11 +7,7 @@
 
 INTERFACE=$(ip route | grep -m 1 default | cut -d' ' -f5)
 
-if [ $# -eq 0 ]; then
-    vmname="ltsp_client"
-else    
-    vmname=$1
-fi
+vmname=${1:-ltsp-client}
 
 VBoxManage createvm --name "${vmname}" --register
 VBoxManage modifyvm "${vmname}" \
