@@ -51,9 +51,8 @@ else
     echo "There is an existing DHCP server running"
     echo "LTSP server won't provide DHCP services.."
     sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-        -e "/^#dhcp-range=.*,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
-    sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-        -e "/^#dhcp-range=.*,proxy\$/ c dhcp-range=10.0.2.0,proxy"
+    -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy" \
+    -e "/10.0.2.0,proxy\$/ c dhcp-range=10.0.2.0,proxy"
 fi
 
 service dnsmasq restart
