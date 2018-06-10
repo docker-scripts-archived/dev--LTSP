@@ -28,8 +28,8 @@ ltsp-config lts.conf
 ltsp-update-image --cleanup /
 
 # enabling password authentication 
-sed -i /etc/ssh/sshd_config -e \
-    "/^PasswordAuth/ c PasswordAuthentication yes" 
+sed -i /etc/ssh/sshd_config \
+    -e "/Authentication no\$/ c PasswordAuthentication yes"
 service ssh restart
 
 # source setting.sh
@@ -44,15 +44,15 @@ if [[ ${STANDALONE,,} == "yes" ]]; then
     echo "LTSP server will be in standalone mode of operation"	
     echo "LTSP server will provide DHCP services.."	
     sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-	-e "/192.168.1.0,proxy\$/ c #dhcp-range=${NETWORK}.0,proxy" \
-	-e "/10.0.2.0,proxy\$/ c #dhcp-range=10.0.2.0,proxy"
+	    -e "/192.168.1.0,proxy\$/ c #dhcp-range=${NETWORK}.0,proxy" \
+	    -e "/10.0.2.0,proxy\$/ c #dhcp-range=10.0.2.0,proxy"
 else
     echo "LTSP server will be in Non-standalone mode of operation"	
     echo "There is an existing DHCP server running"
     echo "LTSP server won't provide DHCP services.."
     sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-    -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy" \
-    -e "/10.0.2.0,proxy\$/ c dhcp-range=10.0.2.0,proxy"
+        -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy" \
+        -e "/10.0.2.0,proxy\$/ c dhcp-range=10.0.2.0,proxy"
 fi
 
 service dnsmasq restart
