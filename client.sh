@@ -9,6 +9,10 @@ INTERFACE=$(ip route | grep -m 1 default | cut -d' ' -f5)
 
 vmname=${1:-ltsp-client}
 
+if [ $vmname == "ltsp-client" ]; then
+    VBoxManage unregistervm $vmname --delete
+fi
+
 VBoxManage createvm --name "${vmname}" --register
 VBoxManage modifyvm "${vmname}" \
     --memory 1024 \
