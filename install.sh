@@ -44,7 +44,7 @@ if [[ ${STANDALONE,,} == "yes" ]]; then
     echo "LTSP server will be in standalone mode of operation"	
     echo "LTSP server will provide DHCP services.."	
     sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-	-e "/.*,proxy\$/ c #dhcp-range=" 
+	-e "/.*,proxy\$/ c \ " 
 else
     echo "LTSP server will be in Non-standalone mode of operation"	
     echo "There is an existing DHCP server running"
