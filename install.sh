@@ -1,61 +1,60 @@
 #!/bin/bash
 
-#Updating packages
+# Updating packages
 apt --yes update
 apt --yes upgrade
 
-#Installing dependencies
+# Installing dependencies
 apt --yes --install-recommends install dnsmasq ldm-ubuntu-theme
 apt --yes --install-recommends install ltsp-server
-export DEBIAN_FRONTEND=noninteractive
-apt -yq --yes --install-recommends install ltsp-client
+DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
 
 
-#Adding vagrant user to group epoptes
+# Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
 
-#Updating kernel
+# Updating kernel
 echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 /usr/share/ltsp/update-kernels
 
-#configure dnsmasq
+# Configure dnsmasq
 ltsp-config dnsmasq
 
-#Creating lts.conf
+# Creating lts.conf
 ltsp-config lts.conf
 
-#Installing additional software
-apt --yes install edubuntu-desktop
+# Installing additional software
 apt --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
 
-#Installing ltsp-manager
+# Installing ltsp-manager
 add-apt-repository ppa:ts.sch.gr
 apt --yes update
 apt --yes install ltsp-manager
 
-#Creating client image
+# Creating client image
 ltsp-update-image --cleanup /
 
-#source setting.sh
+# Source setting.sh
 source /vagrant/settings.sh
 
-#setting dhcp-range
+# Setting dhcp-range
 sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
--e "/^dhcp-range=.*,8h\$/ c dhcp-range=${NETWORK}.20,${NETWORK}.250,8h"
+    -e "/^dhcp-range=.*,8h\$/ c dhcp-range=${NETWORK}.20,${NETWORK}.250,8h"
 
-#Setting mode of operation of ltsp server
+# Setting mode of operation of ltsp server
 if [[ ${STANDALONE,,} == "yes" ]]; then
-	echo "LTSP server will be in standalone mode of operation"	
-	echo "LTSP server will provide DHCP services.."	
-	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/192.168.1.0,proxy\$/ c \
-#dhcp-range=${NETWORK}.0,proxy" -e "/10.0.2.0,proxy\$/ c #dhcp-range=10.0.2.0,proxy"
+    echo "LTSP server will be in standalone mode of operation"	
+    echo "LTSP server will provide DHCP services.."	
+    sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
+        -e "/.*,proxy\$/ c \ " 
 else
-	echo "LTSP server will be in Non-standalone mode of operation"	
-	echo "There is an existing DHCP server running"
-	echo "LTSP server won't provide DHCP services.."
-	sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e "/192.168.1.0,proxy\$/ c \
-dhcp-range=${NETWORK}.0,proxy" -e "/10.0.2.0,proxy\$/ c dhcp-range=10.0.2.0,proxy"
+    echo "LTSP server will be in Non-standalone mode of operation"	
+    echo "There is an existing DHCP server running"
+    echo "LTSP server won't provide DHCP services.."
+    sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
+        -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
 fi
 
+# Restarting service
 service dnsmasq restart
