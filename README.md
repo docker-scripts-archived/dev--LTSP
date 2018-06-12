@@ -46,4 +46,4 @@ We can make a client with the help of virtualbox
 - Click `OK`.
 - Then click `start`. Now you can boot from virtual LTSP server.
 
-Same can be done with a `client.sh` script. It leverages VBoxManage to create ltsp clients. Simply run the script and set the name of the client when prompted.
+Same can be done with a `client.sh` script. It leverages `VBoxManage` to create ltsp clients. Run the script and put name of the client as first argument. If no argument is given then the script uses default name. 
