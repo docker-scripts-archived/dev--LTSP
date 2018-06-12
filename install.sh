@@ -1,15 +1,15 @@
 #!/bin/bash
 
 #Updating packages
-apt-get --yes update
-apt-get --yes upgrade
+apt --yes update
+apt --yes upgrade
 
 #Installing dependencies
-apt-get --yes --install-recommends install dnsmasq ldm-ubuntu-theme
-apt-get --yes --install-recommends install ltsp-server
+apt --yes --install-recommends install dnsmasq ldm-ubuntu-theme
+apt --yes --install-recommends install ltsp-server
 export DEBIAN_FRONTEND=noninteractive
-apt-get -yq --yes --install-recommends install ltsp-client
-apt-get --yes install epoptes epoptes-client
+apt -yq --yes --install-recommends install ltsp-client
+apt --yes install epoptes epoptes-client
 
 
 #Adding vagrant user to group epoptes
@@ -26,13 +26,13 @@ ltsp-config dnsmasq
 ltsp-config lts.conf
 
 #Installing additional software
-apt-get --yes install edubuntu-desktop
-apt-get --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
+apt --yes install edubuntu-desktop
+apt --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
 
 #Installing ltsp-manager
 add-apt-repository ppa:ts.sch.gr
-apt-get --yes update
-apt-get --yes install ltsp-manager
+apt --yes update
+apt --yes install ltsp-manager
 
 #Creating client image
 ltsp-update-image --cleanup /
