@@ -10,7 +10,6 @@ apt --yes --install-recommends install ltsp-server
 DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
 
-
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
 
@@ -21,6 +20,11 @@ echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 # Configure dnsmasq
 ltsp-config dnsmasq
 
+# enabling password authentication 
+sed -i /etc/ssh/sshd_config \
+    -e "/Authentication no\$/ c PasswordAuthentication yes"
+service ssh restart
+
 # Creating lts.conf
 ltsp-config lts.conf
 
@@ -28,7 +32,7 @@ ltsp-config lts.conf
 apt --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
 
 # Installing ltsp-manager
-add-apt-repository ppa:ts.sch.gr
+echo | add-apt-repository ppa:ts.sch.gr
 apt --yes update
 apt --yes install ltsp-manager
 
