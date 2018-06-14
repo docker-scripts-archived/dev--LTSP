@@ -5,7 +5,9 @@
 #  LTSP server is running before running script	#
 #################################################
 
-INTERFACE=$(ip route | grep -m 1 default | cut -d' ' -f5)
+source settings.sh
+ADAPTER=$(VBoxManage list hostonlyifs | grep -B 3 $NETWORK \
+     | grep Name | cut -d':' -f2)
 
 vmname=${1:-ltsp-client}
 
@@ -15,7 +17,7 @@ VBoxManage modifyvm "${vmname}" \
     --memory 1024 \
     --acpi on \
     --boot1 net \
-    --nic1 bridged \
-    --bridgeadapter1 $INTERFACE \
+    --nic1 hostonly \
+    --hostonlyadapter1 $ADAPTER \
     --nicpromisc1 allow-all 
 VBoxManage startvm "${vmname}"
