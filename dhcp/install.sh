@@ -12,7 +12,11 @@ INTERNET=$(ip route | grep default | cut -d' ' -f5)
 LOCAL=$(ip route | grep -v default | cut -d' ' -f3 | grep -v $INTERNET | head -1)
 
 # configuration
-echo "dhcp-range=${NETWORK}.50,${NETWORK}.150,12h" >> /etc/dnsmasq.conf 
+cat <<EOT >> /etc/dnsmasq.conf
+enable-tftp
+pxe-service=x86PC, "Install Linux", /ltsp/amd64/pxelinux, $LAN_IP
+dhcp-range=${LAN_IP},proxy  
+EOT
 
 # restarting service	
 service dnsmasq restart
