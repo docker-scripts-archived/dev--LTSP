@@ -1,13 +1,13 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 load "settings.sh"
-INTERFACE = %x(  ip route | grep default | cut -d' ' -f5 )
+INTERFACE = (%x(  ip route | grep default | cut -d' ' -f5 )).strip
 
 Vagrant.configure("2") do |config|
   
   config.vm.box = "ubuntu/bionic64"
 	
-  config.vm.network "public_network", ip: LAN_IP, netmask: "255.255.255.0", bridge: INTERFACE.strip
+  config.vm.network "public_network", ip: LAN_IP, netmask: "255.255.255.0", bridge: INTERFACE
   
   config.vm.provider "virtualbox" do |virtualbox|
 	  # Enable promiscuous mode
