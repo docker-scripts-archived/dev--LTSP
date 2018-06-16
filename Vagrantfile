@@ -1,7 +1,6 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 load "settings.sh"
-INTERFACE = (%x(  ip route | grep default | cut -d' ' -f5 )).strip
 
 Vagrant.configure("2") do |config|
   
@@ -18,7 +17,4 @@ Vagrant.configure("2") do |config|
   config.vm.provision "shell", path: "install.sh"
 
 end
-
-
-
 
