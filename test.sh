@@ -36,7 +36,7 @@ elif [ "$1" == "stop" ]; then
     sudo ip addr del ${NETWORK}.100/24 brd + dev eth10
     sudo ip link delete eth10 type dummy
     sudo rmmod dummy
-    sed -i '$d' settings.sh   
+    sed -i settings.sh -e "/^INTERFACE/ c \ "
 else
     echo "error: invalid arguments provided"
     help
