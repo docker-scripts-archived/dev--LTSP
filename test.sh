@@ -23,22 +23,25 @@ if [ "$#" == 0 ]; then
     exit
 fi
 
-if [ "$1" == "start" ]; then
-    echo "creating virtual interface.."
-    sudo modprobe dummy
-    sudo ip link add eth10 type dummy
-    sudo ip link set eth10 up
-    sudo ip addr add ${NETWORK}.100/24 brd + dev eth10
-    echo 'INTERFACE="eth10"' >> settings.sh
+case "$1" in
+    "start" )
+        echo "creating virtual interface.."
+        sudo modprobe dummy
+        sudo ip link add eth10 type dummy
+        sudo ip link set eth10 up
+        sudo ip addr add ${NETWORK}.100/24 brd + dev eth10
+        echo 'INTERFACE="eth10"' >> settings.sh 
+        ;;
 
-elif [ "$1" == "stop" ]; then
-    echo "destroying virtual interface.."
-    sudo ip addr del ${NETWORK}.100/24 brd + dev eth10
-    sudo ip link delete eth10 type dummy
-    sudo rmmod dummy
-    sed -i settings.sh -e "/^INTERFACE/ c \ "
-else
-    echo "error: invalid arguments provided"
-    help
-fi
-    
+    "stop" )
+        echo "destroying virtual interface.."
+        sudo ip addr del ${NETWORK}.100/24 brd + dev eth10
+        sudo ip link delete eth10 type dummy
+        sed -i settings.sh -e "/^INTERFACE/ c \ " 
+        sudo rmmod dummy
+        ;;
+    * )
+        echo "error: invalid arguments provided"
+        help
+        ;;
+esac    
