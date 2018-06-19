@@ -1,6 +1,6 @@
 #!/bin/bash
 source settings.sh
-DEVICE=eth10
+DEVICE=ltsptest01
 
 help() {
     cat <<-_EOF
