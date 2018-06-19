@@ -18,6 +18,11 @@ Options:
 _EOF
 }
 
+if [ $UID != 0 ]; then
+	echo "error: use sudo or run script as root user"
+	exit
+fi
+
 if [ "$#" == 0 ]; then
     echo "error: No arguments provided"
     help
