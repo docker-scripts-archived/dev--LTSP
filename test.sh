@@ -27,19 +27,19 @@ fi
 case "$1" in
     "start" )
         echo "creating virtual interface.."
-        sudo modprobe dummy
-        sudo ip link add ${DEVICE} type dummy
-        sudo ip link set ${DEVICE} up
-        sudo ip addr add ${NETWORK}.100/24 brd + dev ${DEVICE}
+        modprobe dummy
+        ip link add ${DEVICE} type dummy
+        ip link set ${DEVICE} up
+        ip addr add ${NETWORK}.100/24 brd + dev ${DEVICE}
         echo "INTERFACE=\"${DEVICE}\"" >> settings.sh 
         ;;
 
     "stop" )
         echo "destroying virtual interface.."
-        sudo ip addr del ${NETWORK}.100/24 brd + dev ${DEVICE}
-        sudo ip link delete ${DEVICE} type dummy
+        ip addr del ${NETWORK}.100/24 brd + dev ${DEVICE}
+        ip link delete ${DEVICE} type dummy
         sed -i settings.sh -e "/^INTERFACE/ c \ " 
-        sudo rmmod dummy
+        rmmod dummy
         ;;
     * )
         echo "error: invalid arguments provided"
