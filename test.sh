@@ -23,12 +23,6 @@ if [ $UID != 0 ]; then
 	exit 1
 fi
 
-if [ "$#" == 0 ]; then
-    echo "error: No arguments provided"
-    help
-    exit 1
-fi
-
 case $1 in
     start )
         echo "creating virtual interface.."
