@@ -29,8 +29,8 @@ if [ "$#" == 0 ]; then
     exit 1
 fi
 
-case "$1" in
-    "start" )
+case $1 in
+    start )
         echo "creating virtual interface.."
         modprobe dummy
         ip link add ${DEVICE} type dummy
@@ -39,7 +39,7 @@ case "$1" in
         echo "INTERFACE=\"${DEVICE}\"" >> settings.sh 
         ;;
 
-    "stop" )
+    stop )
         echo "destroying virtual interface.."
         ip addr del ${NETWORK}.100/24 brd + dev ${DEVICE}
         ip link delete ${DEVICE} type dummy
