@@ -5,7 +5,7 @@ DEVICE=ltsptest01
 help() {
     cat <<-_EOF
     
-test.sh
+$0
 This script creates virtual network adapter which can be used for bridging
 
 Usage:
@@ -20,13 +20,13 @@ _EOF
 
 if [ $UID != 0 ]; then
 	echo "error: use sudo or run script as root user"
-	exit
+	exit 1
 fi
 
 if [ "$#" == 0 ]; then
     echo "error: No arguments provided"
     help
-    exit
+    exit 1
 fi
 
 case "$1" in
