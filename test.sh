@@ -30,14 +30,14 @@ case $1 in
         ip link add ${DEVICE} type dummy
         ip link set ${DEVICE} up
         ip addr add ${NETWORK}.100/24 brd + dev ${DEVICE}
+        sed -i "/^INTERFACE/d" settings.sh
         echo "INTERFACE=\"${DEVICE}\"" >> settings.sh 
         ;;
-
     stop )
         echo "destroying virtual interface.."
         ip addr del ${NETWORK}.100/24 brd + dev ${DEVICE}
         ip link delete ${DEVICE} type dummy
-        sed -i settings.sh -e "/^INTERFACE/ c \ " 
+        sed -i "/^INTERFACE/d" settings.sh 
         rmmod dummy
         ;;
     * )
