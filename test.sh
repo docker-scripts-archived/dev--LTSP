@@ -18,7 +18,7 @@ Options:
 _EOF
 }
 
-if [ $UID != 0 ]; then
+if [[ $UID != 0 ]]; then
 	echo "error: use sudo or run script as root user"
 	exit 1
 fi
@@ -32,7 +32,7 @@ case $1 in
         ip addr add ${NETWORK}.100/24 brd + dev ${DEVICE}
         sed -i "/^INTERFACE/d" settings.sh
         echo "INTERFACE=\"${DEVICE}\"" >> settings.sh 
-        ;;
+        ;;	
     stop )
         echo "destroying virtual interface.."
         ip addr del ${NETWORK}.100/24 brd + dev ${DEVICE}
