@@ -5,7 +5,7 @@
 #  LTSP server is running before running script	#
 #################################################
 
-INTERFACE=$(ip route | grep -m 1 default | cut -d' ' -f5)
+source settings.sh
 
 vmname=${1:-ltsp-client}
 
