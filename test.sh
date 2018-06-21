@@ -1,10 +1,11 @@
 #!/bin/bash
 source settings.sh
+DEVICE=ltsptest01
 
 help() {
     cat <<-_EOF
     
-test.sh
+$0
 This script creates virtual network adapter which can be used for bridging
 
 Usage:
@@ -17,28 +18,30 @@ Options:
 _EOF
 }
 
-if [ "$#" == 0 ]; then
-    echo "error: No arguments provided"
-    help
-    exit
+if [[ $UID != 0 ]]; then
+	echo "error: use sudo or run script as root user"
+	exit 1
 fi
 
-if [ "$1" == "start" ]; then
-    echo "creating virtual interface.."
-    sudo modprobe dummy
-    sudo ip link add eth10 type dummy
-    sudo ip link set eth10 up
-    sudo ip addr add ${NETWORK}.100/24 brd + dev eth10
-    echo 'INTERFACE="eth10"' >> settings.sh
-
-elif [ "$1" == "stop" ]; then
-    echo "destroying virtual interface.."
-    sudo ip addr del ${NETWORK}.100/24 brd + dev eth10
-    sudo ip link delete eth10 type dummy
-    sudo rmmod dummy
-    sed -i '$d' settings.sh   
-else
-    echo "error: invalid arguments provided"
-    help
-fi
-    
+case $1 in
+    start )
+        echo "creating virtual interface.."
+        modprobe dummy
+        ip link add ${DEVICE} type dummy
+        ip link set ${DEVICE} up
+        ip addr add ${NETWORK}.100/24 brd + dev ${DEVICE}
+        sed -i "/^INTERFACE/d" settings.sh
+        echo "INTERFACE=\"${DEVICE}\"" >> settings.sh 
+        ;;	
+    stop )
+        echo "destroying virtual interface.."
+        ip addr del ${NETWORK}.100/24 brd + dev ${DEVICE}
+        ip link delete ${DEVICE} type dummy
+        sed -i "/^INTERFACE/d" settings.sh 
+        rmmod dummy
+        ;;
+    * )
+        echo "error: invalid arguments provided"
+        help
+        ;;
+esac    
