@@ -9,12 +9,19 @@ apt --yes --install-recommends install dnsmasq
 apt --yes --install-recommends install ltsp-server
 DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
+apt --yes install build-essential fakeroot devscripts equivs
+
 
 # Installing ubuntu edu packages
-dpkg -i /vagrant/ubuntu-edu-preschool_15.12.5_amd64.deb
-dpkg -i /vagrant/ubuntu-edu-primary_15.12.5_amd64.deb
-dpkg -i /vagrant/ubuntu-edu-secondary_15.12.5_amd64.deb
-dpkg -i /vagrant/ubuntu-edu-tertiary_15.12.5_amd64.deb
+mkdir /source
+tar -xzvf /vagrant/edubuntu-meta_15.12.5.tar.gz -C /source 
+cd /source/edubuntu-meta-15.12.5
+echo y | mk-build-deps -i debian/control
+dpkg-buildpackage -us -uc
+dpkg -i ../ubuntu-edu-preschool_15.12.5_amd64.deb
+dpkg -i ../ubuntu-edu-primary_15.12.5_amd64.deb
+dpkg -i ../ubuntu-edu-secondary_15.12.5_amd64.deb
+dpkg -i ../ubuntu-edu-tertiary_15.12.5_amd64.deb
 apt --yes install -f
 
 # Adding vagrant user to group epoptes
