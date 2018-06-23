@@ -10,6 +10,12 @@ apt --yes --install-recommends install ltsp-server
 DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
 
+# Installing ubuntu edu packages
+dpkg -i /vagrant/ubuntu-edu-preschool_15.12.5_amd64.deb
+dpkg -i /vagrant/ubuntu-edu-primary_15.12.5_amd64.deb
+dpkg -i /vagrant/ubuntu-edu-secondary_15.12.5_amd64.deb
+dpkg -i /vagrant/ubuntu-edu-tertiary_15.12.5_amd64.deb
+apt --yes install -f
 
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
