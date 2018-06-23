@@ -14,6 +14,7 @@ Vagrant.configure("2") do |config|
 
   end
 
+  config.vm.synced_folder "deps/", "/vagrant"
   config.vm.provision "shell", path: "install.sh"
 
 end
