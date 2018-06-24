@@ -1,0 +1,64 @@
+Source: edubuntu-meta
+Section: metapackages
+Priority: optional
+Maintainer: Deepanshu Gajbhiye <gajbhiye.deepanshu@gmail.com>
+Standards-Version: 4.1.4
+Build-Depends: debhelper (>= 11), germinate (>= 1.18)
+
+Package: debian-desktop
+Architecture: amd64 armhf arm64 i386 powerpc ppc64el
+Depends: ${germinate:Depends}, ${misc:Depends}
+Recommends: ${germinate:Recommends}
+Description: educational desktop for Debian
+ This package depends on the complete set of Ed-supported packages. It
+ provides an educational desktop on top of Debian. It includes:
+  * Edubuntu artwork and documentation
+  * Preschool application bundle
+  * Primary level application bundle
+  * Secondary level application bundle
+  * Tertiary level application bundle
+  * Miscellaneous applications useful in educational settings
+ .
+ It is safe to remove this package if some of the desktop system packages are
+ not desired.
+ 
+Package: debian-fonts
+Architecture: any
+Depends: ${germinate:Depends}, ${misc:Depends}
+Recommends: ${germinate:Recommends}
+Description: Additional fonts included on a default debian system
+ This metapackage will install a selection of packages that contain
+ fonts that may be useful for education or desktop publishing.
+ 
+Package: debian-edu-preschool
+Architecture: any
+Depends: calibre, chemtool, fritzing, inkscape, kalzium, kmplot, ktouch, kturtle, lightspeed, marble, melting, pencil2d, rocs, step, yorick, ${germinate:Depends}, ${misc:Depends}
+Recommends: ${germinate:Recommends}
+Description: Preschool Educational Application Bundle
+ This package depends on all of the educational software for preschool aged 
+ children that is fully supported by Canonical and the Edubuntu community.
+
+Package: debian-edu-primary
+Architecture: any
+Depends: gcompris, kalgebra, kalzium, kanagram, kbruch, kgeography, khangman, kig, klettres, kmplot, kstars, ktouch, ktuberling, kturtle, kwordquiz, marble, parley, ri-li, step, tuxmath, tuxpaint, tuxtype, ${germinate:Depends}, ${misc:Depends}
+Recommends: ${germinate:Recommends}
+Description: Primary Educational Application Bundle
+ This package depends on all of the educational software for Primary grade
+ level education that is fully supported.
+
+Package: debian-edu-secondary
+Architecture: any
+Depends: calibre, chemtool, einstein, fritzing, inkscape, kalgebra, kalzium, kbruch, kgeography, kig, kmplot, kstars, ktouch, ktuberling, kturtle,  kwordquiz, lightspeed, marble, melting, parley, pencil2d, ri-li, step,${germinate:Depends}, ${misc:Depends}
+Recommends: ${germinate:Recommends}
+Description: Secondary Educational Application Bundle
+ This package depends on all of the educational software for Secondary grade
+ level education that is fully supported.
+
+Package: debian-edu-tertiary
+Architecture: any
+Depends: calibre, cantor, chemtool, fritzing, inkscape, kalzium, kmplot, ktouch, kturtle, lightspeed, marble, melting,pencil2d, rocs, step, yorick, ${germinate:Depends}, ${misc:Depends}
+Recommends: ${germinate:Recommends}
+Description: Tertiary Educational Application Bundle
+ This package depends on all of the educational software for Tertiary grade
+ level education that is fully supported.
+
