@@ -1,13 +1,13 @@
 #!/bin/bash
 
-apt --yes update
+# Installing required packages
 apt --yes install build-essential fakeroot devscripts equivs
 
+# Building debian-edu packages
 cd /vagrant/deps/source_package
 echo y | mk-build-deps -i debian/control
 dpkg-buildpackage -us -uc
-dpkg -i ../debian-edu-preschool_15.12.5_amd64.deb
-dpkg -i ../debian-edu-primary_15.12.5_amd64.deb
-dpkg -i ../debian-edu-secondary_15.12.5_amd64.deb
-dpkg -i ../debian-edu-tertiary_15.12.5_amd64.deb
+
+# Installing debian-edu packages with dependencies
+dpkg -i ../debian-edu-*.deb
 apt --yes install -f
