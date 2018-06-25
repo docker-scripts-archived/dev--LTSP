@@ -1,6 +1,4 @@
-desktop-gnome edubuntu-desktop
-fonts edubuntu-fonts
-ubuntu-edu-preschool ubuntu-edu-preschool
-ubuntu-edu-primary ubuntu-edu-primary
-ubuntu-edu-secondary ubuntu-edu-secondary
-ubuntu-edu-tertiary ubuntu-edu-tertiary
+debian-edu-preschool ubuntu-edu-preschool
+debian-edu-primary ubuntu-edu-primary
+debian-edu-secondary ubuntu-edu-secondary
+debian-edu-tertiary ubuntu-edu-tertiary
