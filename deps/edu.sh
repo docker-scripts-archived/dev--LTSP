@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Installing required packages
-apt --yes install build-essential fakeroot devscripts equivs
+apt --yes install devscripts equivs
 
 # Building debian-edu packages
 cd /vagrant/deps/source_package
