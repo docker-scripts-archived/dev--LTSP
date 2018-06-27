@@ -62,3 +62,7 @@ fi
 
 # Restarting service
 service dnsmasq restart
+
+# installing and enabling gui
+apt --yes install xfce4 gtk2-engines-pixbuf
+startxfce4&
