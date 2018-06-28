@@ -10,6 +10,9 @@ apt --yes --install-recommends install ltsp-server
 DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
 
+# Installing and enabling gui
+apt --yes install xubuntu-desktop
+
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
 
