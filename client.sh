@@ -16,6 +16,6 @@ VBoxManage modifyvm "${vmname}" \
     --acpi on \
     --boot1 net \
     --nic1 bridged \
-    --bridgeadapter1 $INTERFACE \
+    --bridgeadapter1 $LAN_IF \
     --nicpromisc1 allow-all 
 VBoxManage startvm "${vmname}"
