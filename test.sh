@@ -1,5 +1,6 @@
 #!/bin/bash
 source settings.sh
+NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 DEVICE=ltsptest01
 
 help() {
@@ -30,18 +31,17 @@ case $1 in
         ip link add ${DEVICE} type dummy
         ip link set ${DEVICE} up
         ip addr add ${NETWORK}.100/24 brd + dev ${DEVICE}
-        sed -i "/^INTERFACE/d" settings.sh
-        echo "INTERFACE=\"${DEVICE}\"" >> settings.sh 
+        sed -i settings.sh -e "/^LAN_IF/ c LAN_IF=\"${DEVICE}\"" 
         ;;	
     stop )
         echo "destroying virtual interface.."
         ip addr del ${NETWORK}.100/24 brd + dev ${DEVICE}
         ip link delete ${DEVICE} type dummy
-        sed -i "/^INTERFACE/d" settings.sh 
+        sed -i settings.sh -e '/^LAN_IF/ c LAN_IF="" '
         rmmod dummy
         ;;
     * )
         echo "error: invalid arguments provided"
         help
         ;;
-esac    
+esac   

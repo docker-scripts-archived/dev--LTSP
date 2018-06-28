@@ -1,12 +1,15 @@
 #!/bin/bash
 
+# Source setting.sh
+source /vagrant/settings.sh
+NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
+
 # Updating packages
 apt --yes update
 apt --yes upgrade
 
 # Installing dependencies
-apt --yes --install-recommends install dnsmasq ldm-ubuntu-theme
-apt --yes --install-recommends install ltsp-server
+apt --yes --install-recommends install dnsmasq ldm-ubuntu-theme ltsp-server
 DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
 
@@ -32,7 +35,7 @@ service ssh restart
 ltsp-config lts.conf
 
 # Installing additional software
-apt --yes install ubuntu-edu-preschool ubuntu-edu-primary ubuntu-edu-secondary ubuntu-edu-tertiary
+apt --yes install $PACKAGES
 
 # Installing ltsp-manager
 echo | add-apt-repository ppa:ts.sch.gr
@@ -41,9 +44,6 @@ apt --yes install ltsp-manager
 
 # Creating client image
 ltsp-update-image --cleanup /
-
-# Source setting.sh
-source /vagrant/settings.sh
 
 # Setting dhcp-range
 sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
