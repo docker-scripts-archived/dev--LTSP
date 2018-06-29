@@ -4,7 +4,7 @@
 apt --yes install devscripts equivs
 
 # Building debian-edu packages
-cd /vagrant/deps/source_package
+cd /vagrant/deps/edudebian-meta-1.0
 echo y | mk-build-deps -i debian/control
 dpkg-buildpackage -us -uc
 
