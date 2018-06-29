@@ -28,7 +28,7 @@ ltsp-config dnsmasq
 
 # enabling password authentication 
 sed -i /etc/ssh/sshd_config \
-    -e "/Authentication no\$/ c PasswordAuthentication yes"
+    -e "/PasswordAuthentication no\$/ c PasswordAuthentication yes"
 service ssh restart
 
 # Creating lts.conf
