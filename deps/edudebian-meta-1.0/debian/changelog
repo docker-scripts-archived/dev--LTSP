@@ -1,56 +1,6 @@
-edubuntu-meta (15.12.6) buster; urgency=medium
+edudebian-meta (1.0) buster; urgency=medium
 
   * Initial release.
   * Ported ubuntu-edu packages to Debian
 
- -- Deepanshu Gajbhiye <gajbhiye.deepanshu@gmail.com>  Thu, 28 Jun 2018 19:26:50 +0000
-
-edubuntu-meta (15.12.5) xenial; urgency=medium
-
-  * Refreshed dependencies
-  * Added tomboy to desktop-gnome-recommends [arm64]
-  * Added tuxmath to ubuntu-edu-primary-recommends [s390x]
-
- -- Iain Lane <iain.lane@canonical.com>  Tue, 19 Apr 2016 21:16:13 +0100
-
-edubuntu-meta (15.12.4) xenial; urgency=medium
-
-  * Refreshed dependencies
-  * Added scribus to desktop-gnome-recommends
-  * Removed scribus-ng from desktop-gnome-recommends
-
- -- Colin Watson <cjwatson@ubuntu.com>  Mon, 04 Apr 2016 13:14:49 +0100
-
-edubuntu-meta (15.12.3) xenial; urgency=medium
-
-  * Refreshed dependencies
-  * Added edubuntu-fonts to desktop-gnome-recommends [s390x]
-  * Added ktuberling to ubuntu-edu-preschool-recommends [s390x], ubuntu-
-    edu-primary-recommends [s390x], ubuntu-edu-secondary-recommends
-    [s390x]
-  * Added laby to ubuntu-edu-primary-recommends [s390x], ubuntu-edu-
-    secondary-recommends [s390x], ubuntu-edu-tertiary-recommends [s390x]
-  * Added tomboy to desktop-gnome-recommends [s390x]
-  * Added ubuntu-edu-preschool to desktop-gnome-recommends [s390x]
-  * Added ubuntu-edu-primary to desktop-gnome-recommends [s390x]
-  * Added ubuntu-edu-secondary to desktop-gnome-recommends [s390x]
-  * Added ubuntu-edu-tertiary to desktop-gnome-recommends [s390x]
-  * Removed celestia-gnome from ubuntu-edu-primary-recommends, ubuntu-
-    edu-secondary-recommends, ubuntu-edu-tertiary-recommends
-
- -- Adam Conrad <adconrad@ubuntu.com>  Sun, 03 Apr 2016 02:11:35 -0600
-
-edubuntu-meta (15.12.2) xenial; urgency=medium
-
-  * Don't build edubuntu-desktop on s390x, where ubuntu-desktop is not
-    available.
-
- -- Steve Langasek <steve.langasek@ubuntu.com>  Sun, 20 Mar 2016 07:16:15 +0000
-
-edubuntu-meta (15.12.1) xenial; urgency=medium
-
-  * Update for xenial
-  * Add s390x as a supported architecture
-  * Removed pairs from ubuntu-edu-preschool-recommends
-
- -- Dmitry Shachnev <mitya57@ubuntu.com>  Sun, 27 Dec 2015 15:50:06 +0300
+ -- Deepanshu Gajbhiye <gajbhiye.deepanshu@gmail.com>  Fri, 29 Jun 2018 14:27:24 +0000
