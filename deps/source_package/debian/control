@@ -7,7 +7,7 @@ Build-Depends: debhelper (>= 11)
  
 Package: debian-edu-preschool
 Architecture: any
-Depends: calibre, chemtool, fritzing, inkscape, kalzium, kmplot, ktouch, kturtle, lightspeed, marble, melting, pencil2d, rocs, step, yorick
+Depends: blinken, gamine, gcompris, kanagram, khangman, klettres, ktuberling, tuxpaint
 Description: Preschool Educational Application Bundle
  This package depends on all of the educational software for preschool aged 
  children that is fully supported by Canonical and the Edubuntu community.
