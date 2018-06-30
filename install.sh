@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Source setting.sh
 source /vagrant/settings.sh
