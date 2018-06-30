@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #################################################
 #  Simple script that creates LTSP clients      #
 #  These clients can only boot from network     #
