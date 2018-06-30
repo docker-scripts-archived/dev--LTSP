@@ -10,6 +10,8 @@ apt --yes --install-recommends install ltsp-server
 DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
 
+# Installing debian edu packages
+source /vagrant/edu-packages/edu.sh
 
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes

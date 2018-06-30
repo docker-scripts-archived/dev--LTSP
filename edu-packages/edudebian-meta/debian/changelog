@@ -1,0 +1,6 @@
+edudebian-meta (1.0) buster; urgency=medium
+
+  * Initial release.
+  * Ported ubuntu-edu packages to Debian
+
+ -- Deepanshu Gajbhiye <gajbhiye.deepanshu@gmail.com>  Fri, 29 Jun 2018 14:27:24 +0000
