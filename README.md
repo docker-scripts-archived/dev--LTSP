@@ -10,15 +10,15 @@ For this project, there are two requirements. Also, it is recommended to use the
 - [Virtualbox](http://virtualbox.org) 
 - [Vagrant](https://vagrantup.com)
 
-## Installation
+## Modes of Operation
 
-Before installation you should know that there are 2 modes of operation of LTSP server. Standalone and Normal. These depend on whether we have a DHCP server on the LAN or not.
+LTSP has 2 modes of operation of LTSP server. Standalone and Normal. These depend on whether we have a DHCP server on the LAN or not.
 
 1. [**Standalone**](https://github.com/docker-scripts/dev--LTSP/wiki/LTSP-Modes-of-Operation#standalone) means that the LTSP server also provides DHCP service to the clients. The vagrant boxes have NAT configured Inside them. Same can be used clients can have access to internet through LTSP server, gateway for the internet.
 
 1. [**Normal**](https://github.com/docker-scripts/dev--LTSP/wiki/LTSP-Modes-of-Operation#normal) means that the LTSP server does not provide IP addresses (DHCP service) to the clients, but there is another (existing) DHCP server on the LAN that does this. In this case the LTSP server usually is not the gateway to the Internet.
 
-Installation steps are -
+## Installation
 
 - Clone the repository
 	```
@@ -34,9 +34,9 @@ Installation steps are -
 ## Automated testing
 
 Automated testing is mostly done with `test.sh` script.
-```
-./test.sh [start/stop]
- ```
+    ```
+    ./test.sh [start/stop]
+    ```
 You can do automated testing in following steps -
 - Do a `./test.sh start`. It will create virtual network for testing, launch ltsp server and then starts ltsp client.​
 - You should see a client booting up from the ltsp-server.
