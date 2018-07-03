@@ -26,6 +26,10 @@ echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 # Configure dnsmasq
 ltsp-config dnsmasq
 
+# Client reboot issue fix
+echo 'INIT_COMMAND_RM_NBD_CHECKUPDATE="rm -rf /usr/share/ldm/rc.d/I01-nbd-checkupdate"' \
+    >> /var/lib/tftpboot/ltsp/amd64/lts.conf
+
 # enabling password authentication 
 sed -i /etc/ssh/sshd_config \
     -e "/PasswordAuthentication no\$/ c PasswordAuthentication yes"
