@@ -26,7 +26,7 @@ echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 # Configure dnsmasq
 ltsp-config dnsmasq
 
-# Client reboot issue fix
+# Client reboot issue fix (https://github.com/NetworkBlockDevice/nbd/issues/59)
 echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdate \ 
     /usr/share/ldm/rc.d/I01-nbd-checkupdate.orig"' \
     >> /var/lib/tftpboot/ltsp/amd64/lts.conf
