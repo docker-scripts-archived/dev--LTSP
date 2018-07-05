@@ -4,7 +4,7 @@ load "settings.sh"
 
 Vagrant.configure("2") do |config|
   
-  config.vm.box = VM_BOX
+  config.vm.box = VB_NAME
 	
   config.vm.network "public_network", ip: LAN_IP, netmask: "255.255.255.0", bridge: LAN_IF
   
@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider "virtualbox" do |virtualbox|
 	  # Enable promiscuous mode
   	  virtualbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
-  	  virtualbox.memory = VM_RAM
+  	  virtualbox.memory = VB_RAM
    end
   
   config.vm.provider "virtualbox" do |vb|
