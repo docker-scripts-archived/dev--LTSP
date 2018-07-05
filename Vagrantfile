@@ -4,7 +4,7 @@ load "settings.sh"
 
 Vagrant.configure("2") do |config|
   
-  config.vm.box = VB_NAME
+  config.vm.box = VB_IMAGE
 	
   config.vm.network "public_network", ip: LAN_IP, netmask: "255.255.255.0", bridge: LAN_IF
   

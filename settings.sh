@@ -14,5 +14,5 @@ LAN_IF=""
 PACKAGES=""
 
 # Vagrantbox configuration
-VB_NAME="ubuntu/bionic64"
+VB_IMAGE="ubuntu/bionic64"
 VB_RAM="1024"
