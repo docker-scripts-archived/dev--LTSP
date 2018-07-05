@@ -86,3 +86,15 @@ Or you can have an actual ltsp client that works on network boot as it has no ha
 
 You may refer to wiki page for more details - https://github.com/docker-scripts/dev--LTSP/wiki
 
+## For developers and testers
+If you are tester or developer or contributor to this project then you can install a plugin named `vagrant-cachier` that will reduce the time for installation of LTSP. For this plugin to work you need to make sure that firewall is turned off. Also packages like `nfscommon` and `nfs-kernel-server` are installed. If not you can install them by -
+```
+sudo apt install nfs-kernel-server nfs-common
+```
+
+Then You can install the plugin by - 
+```
+vagrant plugin install vagrant-cachier
+```
+The plugin will simply store all your packages installed in `~/.vagrant.d/cache`. So that they dont need to be downloaded again from the internet next time you do a `vagrant up`. You can read more about this plugin here - https://github.com/fgrehm/vagrant-cachier
+
