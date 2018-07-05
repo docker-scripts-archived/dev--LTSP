@@ -12,3 +12,7 @@ LAN_IF=""
 # List of extra packages to be installed on ltsp server.
 # Example user can define ubuntu-edu-preschool ubuntu-edu-primary, etc
 PACKAGES=""
+
+# Virtual machine configuration
+VM_BOX="ubuntu/bionic64"
+VM_RAM="1024"
