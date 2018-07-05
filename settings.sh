@@ -12,3 +12,7 @@ LAN_IF=""
 # List of extra packages to be installed on ltsp server.
 # Example user can define ubuntu-edu-preschool ubuntu-edu-primary, etc
 PACKAGES=""
+
+# Vagrantbox configuration
+VB_IMAGE="ubuntu/bionic64"
+VB_RAM="1024"
