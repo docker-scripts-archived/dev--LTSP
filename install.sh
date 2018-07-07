@@ -5,16 +5,13 @@ source /vagrant/settings.sh
 NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
 # Updating packages
-apt --yes update
-apt --yes upgrade
+apt update --yes
+apt upgrade --yes
 
 # Installing dependencies
-apt --yes --install-recommends install dnsmasq ldm-ubuntu-theme ltsp-server
-DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
-apt --yes install epoptes epoptes-client
-
-# Installing and enabling gui
-apt --yes install xubuntu-desktop
+apt install --yes --install-recommends dnsmasq ldm-ubuntu-theme ltsp-server
+DEBIAN_FRONTEND=noninteractive apt install --yes --install-recommends ltsp-client
+apt install --yes epoptes epoptes-client
 
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
@@ -24,12 +21,8 @@ echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 /usr/share/ltsp/update-kernels
 
 # Configure dnsmasq
+echo "port=5353" >> /etc/dnsmasq.conf
 ltsp-config dnsmasq
-
-# Client reboot issue fix (https://github.com/NetworkBlockDevice/nbd/issues/59)
-echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdate \ 
-    /usr/share/ldm/rc.d/I01-nbd-checkupdate.orig"' \
-    >> /var/lib/tftpboot/ltsp/amd64/lts.conf
 
 # enabling password authentication 
 sed -i /etc/ssh/sshd_config \
@@ -39,13 +32,17 @@ service ssh restart
 # Creating lts.conf
 ltsp-config lts.conf
 
+# Client reboot issue fix (https://github.com/NetworkBlockDevice/nbd/issues/59)
+echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdate /usr/share/ldm/rc.d/I01-nbd-checkupdate.orig"' \
+    >> /var/lib/tftpboot/ltsp/i386/lts.conf
+
 # Installing additional software
-apt --yes install $PACKAGES
+apt install --yes $PACKAGES
 
 # Installing ltsp-manager
-echo | add-apt-repository ppa:ts.sch.gr
-apt --yes update
-apt --yes install ltsp-manager
+add-apt-repository ppa:ts.sch.gr -y
+apt update --yes
+apt install --yes ltsp-manager 
 
 # Creating client image
 ltsp-update-image --cleanup /

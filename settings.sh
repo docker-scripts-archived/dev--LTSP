@@ -14,5 +14,5 @@ LAN_IF=""
 PACKAGES=""
 
 # Vagrantbox configuration
-VB_IMAGE="ubuntu/bionic64"
+VB_IMAGE="d78ui98/linuxmint-19-xfce-32bit"
 VB_RAM="1024"
