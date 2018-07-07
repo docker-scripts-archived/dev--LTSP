@@ -33,9 +33,8 @@ service ssh restart
 ltsp-config lts.conf
 
 # Client reboot issue fix (https://github.com/NetworkBlockDevice/nbd/issues/59)
-echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdate \ 
-    /usr/share/ldm/rc.d/I01-nbd-checkupdate.orig"' \
-    >> /var/lib/tftpboot/ltsp/amd64/lts.conf
+echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdate /usr/share/ldm/rc.d/I01-nbd-checkupdate.orig"' \
+    >> /var/lib/tftpboot/ltsp/i386/lts.conf
 
 # Installing additional software
 apt install --yes $PACKAGES
