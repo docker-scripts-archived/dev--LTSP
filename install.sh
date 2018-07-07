@@ -62,7 +62,7 @@ else
     echo "There is an existing DHCP server running"
     echo "LTSP server won't provide DHCP services.."
     sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-        -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
+        -e "/192.168.111.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
 fi
 
 # Restarting service
