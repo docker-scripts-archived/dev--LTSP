@@ -6,7 +6,7 @@ NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
 # Updating packages
 apt update --yes
-apt upgrade --yes
+DEBIAN_FRONTEND=noninteractive apt upgrade --yes
 
 # Installing dependencies
 apt install --yes --install-recommends dnsmasq ldm-ubuntu-theme ltsp-server
