@@ -6,6 +6,7 @@ NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
 # Updating packages
 apt update --yes
+# Setting type of user interface with a boot parameter - https://www.debian.org/releases/jessie/i386/ch05s03.html 
 DEBIAN_FRONTEND=noninteractive apt upgrade --yes
 
 # Installing dependencies
