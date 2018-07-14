@@ -12,7 +12,7 @@ DEBIAN_FRONTEND=noninteractive apt upgrade --yes
 # Installing dependencies
 apt install --yes --install-recommends dnsmasq ldm-ubuntu-theme ltsp-server
 DEBIAN_FRONTEND=noninteractive apt install --yes --install-recommends ltsp-client
-apt install --yes epoptes epoptes-client
+apt install --yes epoptes epoptes-client resolvconf
 
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
