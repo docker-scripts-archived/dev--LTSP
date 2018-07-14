@@ -6,7 +6,8 @@ NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
 # Updating packages
 apt update --yes
-apt upgrade --yes
+# Setting type of user interface with a boot parameter - https://www.debian.org/releases/jessie/i386/ch05s03.html 
+DEBIAN_FRONTEND=noninteractive apt upgrade --yes
 
 # Installing dependencies
 apt install --yes --install-recommends dnsmasq ldm-ubuntu-theme ltsp-server
@@ -62,7 +63,7 @@ else
     echo "There is an existing DHCP server running"
     echo "LTSP server won't provide DHCP services.."
     sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-        -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
+        -e "/192.168.111.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
 fi
 
 # Restarting service

@@ -38,8 +38,6 @@ case $1 in
         	vagrant up
         	cd -
         fi
-        vagrant up
-        vagrant halt
         vagrant up && ./client.sh
         ;;	
     stop )
