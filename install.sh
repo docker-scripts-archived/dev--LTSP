@@ -12,7 +12,7 @@ DEBIAN_FRONTEND=noninteractive apt upgrade --yes
 # Installing dependencies
 apt install --yes --install-recommends dnsmasq ldm-ubuntu-theme ltsp-server
 DEBIAN_FRONTEND=noninteractive apt install --yes --install-recommends ltsp-client
-apt install --yes epoptes epoptes-client
+apt install --yes epoptes epoptes-client resolvconf
 
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
@@ -20,6 +20,13 @@ gpasswd -a ${SUDO_USER:-$USER} epoptes
 # Updating kernel
 echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 /usr/share/ltsp/update-kernels
+
+# Configuring resolvconf
+echo "nameserver 8.8.8.8
+nameserver 8.8.4.4" >> /etc/resolvconf/resolv.conf.d/head
+mv /etc/resolv.conf /etc/resolv.conf.backup
+ln -s /run/resolvconf/resolv.conf /etc/resolv.conf
+resolvconf -u
 
 # Configure dnsmasq
 echo "port=5353" >> /etc/dnsmasq.conf
