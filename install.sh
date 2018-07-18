@@ -2,6 +2,13 @@
 
 # Source setting.sh
 source /vagrant/settings.sh
+
+# Fetching LAN_IP and network address
+if [[ ${STANDALONE,,} != yes ]]; then
+   LAN_IP=$(ip addr | grep "inet\b" | cut -d" " -f6 | grep 192 |  cut -d/ -f1)
+   sed -i /vagrant/settings.sh \
+      -e "/LAN_IP=""/ c LAN_IP=\"$LAN_IP\""
+fi
 NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
 # Updating packages
