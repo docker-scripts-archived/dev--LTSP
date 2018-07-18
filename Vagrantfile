@@ -6,7 +6,7 @@ Vagrant.configure("2") do |config|
   
   config.vm.box = VB_IMAGE
 	
-  if $STANDALONE == "yes"		
+  if STANDALONE.downcase == "yes"		
     config.vm.network "public_network", ip: LAN_IP, netmask: "255.255.255.0", bridge: LAN_IF
   else
     config.vm.network "public_network", auto_config: true, bridge: LAN_IF
