@@ -47,11 +47,6 @@ echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdat
 # Installing additional software
 apt install --yes $PACKAGES
 
-# Installing ltsp-manager
-add-apt-repository ppa:ts.sch.gr -y
-apt update --yes
-apt install --yes ltsp-manager 
-
 # Creating client image
 ltsp-update-image --cleanup /
 
@@ -70,7 +65,7 @@ else
     echo "There is an existing DHCP server running"
     echo "LTSP server won't provide DHCP services.."
     sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
-        -e "/192.168.111.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
+        -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
 fi
 
 # Restarting service
