@@ -5,7 +5,7 @@ source /vagrant/settings.sh
 
 # Fetching LAN_IP and network address
 if [[ ${STANDALONE,,} != yes ]]; then
-   LAN_IP=$(ip addr | grep -Po -m3 'inet \K[\d.]+' | tail -n1)
+   LAN_IP=$(ip addr show enp0s8 | grep -Po 'inet \K[\d.]+')
 fi
 NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
