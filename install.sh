@@ -5,7 +5,7 @@ source /vagrant/settings.sh
 
 # Fetching LAN_IP and network address
 if [[ ${STANDALONE,,} != yes ]]; then
-   LAN_IP=$(ip addr | grep "inet\b" | cut -d" " -f6 | grep 192 |  cut -d/ -f1)
+   LAN_IP=$(ip addr | grep -Po -m3 'inet \K[\d.]+' | tail -n1)
    sed -i /vagrant/settings.sh \
       -e "/LAN_IP=""/ c LAN_IP=\"$LAN_IP\""
 fi
