@@ -11,18 +11,19 @@ if [[ ${STANDALONE,,} != yes ]]; then
 fi
 NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
-# Updating packages
+# Adding repository and Updating packages
+add-apt-repository ppa:ts.sch.gr --yes
 apt update --yes
 # Setting type of user interface with a boot parameter - https://www.debian.org/releases/jessie/i386/ch05s03.html 
 DEBIAN_FRONTEND=noninteractive apt upgrade --yes
 
-# Installing dependencies
-apt install --yes --install-recommends dnsmasq ldm-ubuntu-theme ltsp-server
+# Installing packages
+apt install --yes --install-recommends ltsp-server epoptes
 DEBIAN_FRONTEND=noninteractive apt install --yes --install-recommends ltsp-client
-apt install --yes epoptes epoptes-client resolvconf
+apt install --yes ltsp-manager 
 
 # Adding vagrant user to group epoptes
-gpasswd -a ${SUDO_USER:-$USER} epoptes
+gpasswd -a ${SUDO_USER:-$(logname)} epoptes
 
 # Updating kernel
 echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
