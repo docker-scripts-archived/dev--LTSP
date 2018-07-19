@@ -68,3 +68,17 @@ fi
 
 # Restarting service
 service dnsmasq restart
+
+# Automatically login from clients 
+if [[ ${AUTOMATIC_LOGIN,,} == "yes" ]]; then
+    sed -i /var/lib/tftpboot/ltsp/i386/lts.conf \
+        -e "/^#LDM_AUTOLOGIN/ a LDM_USERNAME=vagrant \nLDM_PASSWORD=vagrant" \
+        -e "/^#LDM_AUTOLOGIN/ c LDM_AUTOLOGIN=True"
+fi 
+
+# Provide Login as Guest button to directly login from client
+if [[ ${GUEST_ACCOUNT,,} == "yes" ]]; then
+    sed -i /var/lib/tftpboot/ltsp/i386/lts.conf \
+        -e "/^#LDM_GUESTLOGIN/ a LDM_USERNAME=vagrant \nLDM_PASSWORD=vagrant" \
+        -e "/^#LDM_GUESTLOGIN/ c LDM_GUESTLOGIN=True"
+fi
