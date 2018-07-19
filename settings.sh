@@ -1,6 +1,6 @@
 # mode of operation. yes for standalone mode. no for normal mode
 # refer this - https://github.com/docker-scripts/dev--LTSP/wiki/LTSP-Modes-of-Operation 
-STANDALONE="yes"
+STANDALONE="no"
 
 # IP address of ltsp server
 LAN_IP="192.168.111.16"
