@@ -40,7 +40,7 @@ ltsp-config lts.conf
 
 # Client reboot issue fix (https://github.com/NetworkBlockDevice/nbd/issues/59)
 echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdate /usr/share/ldm/rc.d/I01-nbd-checkupdate.orig"' \
-    >> /var/lib/tftpboot/ltsp/i386/lts.conf
+    >> $(ltsp-config -o lts.conf|cut -d' ' -f2)
 
 # Installing additional software
 apt install --yes $PACKAGES
@@ -71,14 +71,14 @@ service dnsmasq restart
 
 # Automatically login from clients 
 if [[ ${AUTOMATIC_LOGIN,,} == "yes" ]]; then
-    sed -i /var/lib/tftpboot/ltsp/i386/lts.conf \
+    sed -i $(ltsp-config -o lts.conf|cut -d' ' -f2) \
         -e "/^#LDM_AUTOLOGIN/ a LDM_USERNAME=vagrant \nLDM_PASSWORD=vagrant" \
         -e "/^#LDM_AUTOLOGIN/ c LDM_AUTOLOGIN=True"
 fi 
 
 # Provide Login as Guest button to directly login from client
 if [[ ${GUEST_ACCOUNT,,} == "yes" ]]; then
-    sed -i /var/lib/tftpboot/ltsp/i386/lts.conf \
+    sed -i $(ltsp-config -o lts.conf|cut -d' ' -f2) \
         -e "/^#LDM_GUESTLOGIN/ a LDM_USERNAME=vagrant \nLDM_PASSWORD=vagrant" \
         -e "/^#LDM_GUESTLOGIN/ c LDM_GUESTLOGIN=True"
 fi
