@@ -16,3 +16,9 @@ PACKAGES=""
 # Vagrantbox configuration
 VB_IMAGE="d78ui98/linuxmint-19-xfce-32bit"
 VB_RAM="1024"
+
+# Provide Login as Guest button to directly login from client
+GUEST_ACCOUNTS="yes"
+
+# Automatically login from clients
+AUTOMATIC_LOGIN="no"
