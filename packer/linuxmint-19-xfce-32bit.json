@@ -1,0 +1,102 @@
+{
+  "builders": [{
+    "vm_name": "{{user `vm_name`}}",
+    "type": "virtualbox-iso",
+    "guest_os_type": "Ubuntu",
+    "http_directory": "http",
+    "iso_url": "{{ user `iso_url` }}",
+    "iso_checksum": "{{ user `iso_checksum` }}",
+    "iso_checksum_type": "{{ user `iso_checksum_type` }}",
+    "ssh_password": "{{ user `ssh_password` }}",
+    "ssh_username": "{{ user `ssh_username` }}",
+    "ssh_wait_timeout": "10000s",
+    "headless": "{{ user `headless` }}",
+    "boot_command": [
+      "{{ user `boot_command_prefix` }}",
+      "/casper/vmlinuz ",
+      "url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/{{ user `preseed` }} ",
+      "boot=casper ",
+      "initrd=/casper/initrd.lz ",
+      "debug-ubiquity ",
+      "automatic-ubiquity ",
+      "quiet ",
+      "splash ",
+      "noprompt ",
+      "-- <enter>"
+    ],
+    "shutdown_command": "echo '{{ user `ssh_password` }}'|sudo -S shutdown -P now",
+    "post_shutdown_delay": "1m",
+    "disk_size": "{{ user `disk_size` }}",
+    "guest_additions_path": "VBoxGuestAdditions_{{.Version}}.iso",
+    "virtualbox_version_file": ".vbox_version",
+    "hard_drive_interface": "sata",
+    "vboxmanage": [
+      [ "modifyvm", "{{.Name}}", "--memory", "{{ user `memory` }}" ],
+      [ "modifyvm", "{{.Name}}", "--cpus", "{{ user `cpus` }}" ]
+    ]
+  }],
+  "post-processors": [
+    [
+      {
+        "compression_level": "6",
+        "keep_input_artifact": false,
+        "output": "box/{{.Provider}}/{{user `vm_name`}}-{{user `version`}}.box",
+        "type": "vagrant",
+        "vagrantfile_template": "{{ user `vagrantfile_template` }}"
+      }
+    ]
+  ],
+  "provisioners": [
+    {
+      "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "scripts": [
+        "script/rc_local.sh",
+        "script/apt.sh",
+        "script/sshd.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "expect_disconnect": true,
+      "scripts": [
+        "script/update.sh",
+        "script/reboot.sh"
+      ],
+      "type": "shell"
+    },
+    {
+      "execute_command": "echo '{{ user `ssh_password` }}' | {{.Vars}} sudo -E -S bash '{{.Path}}'",
+      "pause_before": "120s",
+      "scripts": [
+        "script/vagrant.sh",
+        "script/virtualbox.sh",
+        "script/sudoers.sh",
+        "script/cleanup.sh"
+      ],
+      "type": "shell"
+    }
+  ],
+  "variables": {
+    "headless": "false",
+    "hostname": "vagrant",
+    "ssh_fullname": "vagrant",
+    "ssh_password": "vagrant",
+    "ssh_username": "vagrant",
+
+    "_comment": "Build with `packer build linuxmint-19-xfce-32bit.json`",
+  "boot_command_prefix": "<esc><wait><tab><wait><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs><bs>",
+  "box_tag": "d78ui98/linuxmint-19-xfce-32bit",
+  "cpus": "1",
+  "disk_size": "20000",
+  "iso_checksum_type": "sha256",
+  "iso_checksum": "54daa1c9912b4d77c0c90f884abfa09b7f9d6a0992d3c404d8dd782333d7659a",
+  "iso_url": "http://www.mirrorservice.org/sites/www.linuxmint.com/pub/linuxmint.com/stable/19/linuxmint-19-xfce-32bit.iso",
+  "memory": "1024",
+  "preseed": "mint-19.seed",
+  "vagrantfile_template": "tpl/linuxmint-19-xfce-32bit.tpl",
+  "version": "1.0.3",
+  "version_description": "Linux Mint 19.0 with VirtualBox Guest Additions 5.2.12",
+  "vm_name": "linuxmint-19-xfce-32bit"
+  }
+}
