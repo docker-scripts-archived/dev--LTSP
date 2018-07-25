@@ -40,8 +40,8 @@ ubiquity ubiquity/success_command string cp /target/etc/rc.local /target/etc/rc.
         echo "sleep 2" >> /target/etc/rc.local; \
         echo "connected=\$(nmcli d | grep 'enp0s3' | gawk '{print \$3}')" >> /target/etc/rc.local; \
         echo "done" >> /target/etc/rc.local; \
-    echo "apt-get update -y > /var/log/rclog.txt 2>&1" >> /target/etc/rc.local; \
-    echo "apt-get install -y openssh-server >> /var/log/rclog.txt 2>&1" >> /target/etc/rc.local; \
+    echo "apt update -y > /var/log/rclog.txt 2>&1" >> /target/etc/rc.local; \
+    echo "apt install -y openssh-server >> /var/log/rclog.txt 2>&1" >> /target/etc/rc.local; \
     echo "exit 0" >> /target/etc/rc.local; \
     chmod +x /target/etc/rc.local
 
