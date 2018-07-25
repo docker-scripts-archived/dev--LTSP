@@ -17,3 +17,20 @@ packer validate linuxmint-19-xfce-32bit.json
 ```
 packer build linuxmint-19-xfce-32bit.json
 ```
+
+## Initializing vagrant box
+```
+vagrant box add linuxmint-19-xfce-32bit box/virtualbox/linuxmint-19-xfce-32bit-1.0.3.box 
+```
+
+## Creating  Vagrant environment
+You can create any directory and create the vagrant enviroment with -
+```
+vagrant init linuxmint-19-xfce-32bit
+vagrant up
+``` 
+ 
+## Connecting with vagrant box
+```
+vagrant ssh
+```
