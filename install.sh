@@ -18,7 +18,7 @@ apt upgrade --yes
 apt install --yes --install-recommends ltsp-server epoptes
 # Setting type of user interface with a boot parameter - https://www.debian.org/releases/jessie/i386/ch05s03.html
 DEBIAN_FRONTEND=noninteractive apt install --yes --install-recommends ltsp-client
-apt install --yes ltsp-manager 
+apt install --yes python-twisted ltsp-manager 
 
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$(logname)} epoptes
