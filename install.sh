@@ -23,6 +23,9 @@ apt --yes install epoptes epoptes-client
 # Installing debian edu packages
 source /vagrant/edu-packages/edu.sh
 
+# Installing xfce desktop environment
+apt --yes install task-xfce-desktop 
+
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
 
