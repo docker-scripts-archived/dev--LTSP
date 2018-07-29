@@ -14,7 +14,7 @@ LAN_IF=""
 PACKAGES=""
 
 # Vagrantbox configuration
-VB_IMAGE="fujimakishouten/debian-buster64"
+VB_IMAGE="debian/stretch64"
 VB_RAM="1024"
 
 # Provide Login as Guest button to directly login from client
