@@ -25,10 +25,7 @@ Vagrant.configure("2") do |config|
 	  # Enable promiscuous mode
   	  virtualbox.customize ["modifyvm", :id, "--nicpromisc2", "allow-all"]
   	  virtualbox.memory = VB_RAM
-   end
-  
-  config.vm.provider "virtualbox" do |vb|
-    vb.gui = true
+  	  virtualbox.gui = true
    end
 
   config.vm.synced_folder ".", "/vagrant"
