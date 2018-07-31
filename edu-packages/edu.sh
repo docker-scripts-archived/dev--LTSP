@@ -1,7 +1,10 @@
-#!/bin/bash
+#!/bin/bash -x
 
 # Installing required packages
+echo "deb http://ftp.debian.org/debian stretch-backports main" >> /etc/apt/sources.list
+apt --yes update
 apt --yes install devscripts equivs
+apt -t stretch-backports install debhelper --yes
 
 # Building debian-edu packages
 cd /vagrant/edu-packages/edudebian-meta

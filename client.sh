@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 #################################################
 #  Simple script that creates LTSP clients      #
 #  These clients can only boot from network     #
@@ -16,6 +16,6 @@ VBoxManage modifyvm "${vmname}" \
     --acpi on \
     --boot1 net \
     --nic1 bridged \
-    --bridgeadapter1 $INTERFACE \
+    --bridgeadapter1 $LAN_IF \
     --nicpromisc1 allow-all 
 VBoxManage startvm "${vmname}"

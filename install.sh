@@ -1,17 +1,30 @@
-#!/bin/bash
+#!/bin/bash -x
+
+# Source setting.sh
+source /vagrant/settings.sh
+
+# Fetching LAN_IP and network address
+if [[ ${STANDALONE,,} != yes ]]; then
+   LAN_IP=$(ip addr | grep -Po -m3 'inet \K[\d.]+' | tail -n1)
+fi
+NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
 # Updating packages
 apt --yes update
 apt --yes upgrade
 
-# Installing dependencies
+# Installing packages
 apt --yes --install-recommends install dnsmasq 
 apt --yes --install-recommends install ltsp-server
+# Setting type of user interface with a boot parameter - https://www.debian.org/releases/jessie/i386/ch05s03.html
 DEBIAN_FRONTEND=noninteractive apt --yes --install-recommends install ltsp-client
 apt --yes install epoptes epoptes-client
 
 # Installing debian edu packages
 source /vagrant/edu-packages/edu.sh
+
+# Installing xfce desktop environment
+apt --yes install task-xfce-desktop 
 
 # Adding vagrant user to group epoptes
 gpasswd -a ${SUDO_USER:-$USER} epoptes
@@ -20,26 +33,30 @@ gpasswd -a ${SUDO_USER:-$USER} epoptes
 echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 /usr/share/ltsp/update-kernels
 
-# configure dnsmasq
+# Configure dnsmasq
 ltsp-config dnsmasq
 
+# enabling password authentication 
+sed -i /etc/ssh/sshd_config \
+    -e "/PasswordAuthentication no\$/ c PasswordAuthentication yes"
+service ssh restart
+
 # Creating lts.conf
-ltsp-config lts.conf
+lts_path=$(ltsp-config -o lts.conf|cut -d' ' -f2)
+
+# Client reboot issue fix (https://github.com/NetworkBlockDevice/nbd/issues/59)
+echo 'INIT_COMMAND_MV_NBD_CHECKUPDATE="mv /usr/share/ldm/rc.d/I01-nbd-checkupdate /usr/share/ldm/rc.d/I01-nbd-checkupdate.orig"' \
+    >> "$lts_path"
+
+# Installing additional software
+apt install --yes $PACKAGES
 
 # Creating client image
 ltsp-update-image --cleanup /
 
-# enabling password authentication 
-sed -i /etc/ssh/sshd_config \
-    -e "/Authentication no\$/ c PasswordAuthentication yes"
-service ssh restart
-
-# source setting.sh
-source /vagrant/settings.sh
-
-# setting dhcp-range
-sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf -e \
-    "/^dhcp-range=.*,8h\$/ c dhcp-range=${NETWORK}.20,${NETWORK}.250,8h"
+# Setting dhcp-range
+sed -i /etc/dnsmasq.d/ltsp-server-dnsmasq.conf \
+    -e "/^dhcp-range=.*,8h\$/ c dhcp-range=${NETWORK}.20,${NETWORK}.250,8h"
 
 # Setting mode of operation of ltsp server
 if [[ ${STANDALONE,,} == "yes" ]]; then
@@ -55,4 +72,20 @@ else
         -e "/192.168.1.0,proxy\$/ c dhcp-range=${NETWORK}.0,proxy"
 fi
 
+# Restarting service
 service dnsmasq restart
+
+# Automatically login from clients 
+if [[ ${AUTOMATIC_LOGIN,,} == "yes" ]]; then
+    sed -i "$lts_path" \
+        -e "/^#LDM_AUTOLOGIN/ a LDM_USERNAME=vagrant \nLDM_PASSWORD=vagrant" \
+        -e "/^#LDM_AUTOLOGIN/ c LDM_AUTOLOGIN=True"
+fi 
+
+# Provide Login as Guest button to directly login from client
+if [[ ${GUEST_ACCOUNT,,} == "yes" ]]; then
+    sed -i "$lts_path" \
+        -e "/^#LDM_GUESTLOGIN/ a LDM_USERNAME=vagrant \nLDM_PASSWORD=vagrant" \
+        -e "/^#LDM_GUESTLOGIN/ c LDM_GUESTLOGIN=True"
+fi
+
