@@ -37,8 +37,10 @@ function create_user
 {
     for line in $(cat $filename)
         do
-            user=$(echo $line | cut -f1 -d:)
-            pass=$(echo $line | cut -f2 -d:)
+            IFS=":"
+            read -ra ARRAY <<<"$line"
+            user=${ARRAY[0]}
+            pass=${ARRAY[1]}
             echo adding user $user 
             useradd $user -d /home/$user -m -s /bin/bash
             echo "$user:$pass" | chpasswd
