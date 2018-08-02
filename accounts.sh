@@ -1,7 +1,7 @@
 #!/bin/bash -x
 
-option=$1
-filename=$2
+option="$1"
+filename="$2"
 
 help() {
     cat <<EOF
@@ -19,10 +19,10 @@ Options:
     restore     This option will recreate the user accounts and their home directories from backup archive 
     
 Examples:
-   sudo $0 import user-accounts.txt
-   sudo $0 export user-accounts.txt
-   sudo $0 backup
-   sudo $0 restore user-accounts.txt    
+    sudo $0 import user-accounts.txt
+    sudo $0 export user-accounts.txt
+    sudo $0 backup 2018-user-home-dir.tar.gz
+    sudo $0 restore 2018-user-home-dir.tar.gz  
     
 EOF
 
@@ -33,13 +33,13 @@ if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]  ; then
    exit 1
 fi
 
-if [[ $UID != 0 ]]; then	
+if [[ "$UID" != 0 ]]; then	
+    help
 	echo "error: use sudo or run script as root user"	
-	help
 	exit 1	
 fi
 
-case $1 in
+case $option in
     import )
         for line in $(cat $filename)
         do
