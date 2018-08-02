@@ -60,20 +60,26 @@ case $1 in
         do
             echo "$user" >> /vagrant/$filename
         done
-       ;;
+        ;;
     
     backup )
-       cd /vagrant
-       tar -pcvf 2018-user-home-dir.tar.gz /home /vagrant/user-accounts.txt
-       cd -
-       ;;
+        echo "" > /vagrant/*.txt
+        normal_user=$(awk -F: '($3>=1001)&&($1!="nobody"){print $1; exit}' /etc/passwd)
+        for user in $(cat /etc/shadow | grep -A 5000 $normal_user | cut -f1-2 -d:)
+        do
+            echo "$user" >> /vagrant/user-accounts.txt
+        done
+        cd /vagrant
+        tar -pcvf "$filename" /home /vagrant/user-accounts.txt
+        cd -
+        ;;
     
     restore )
-       create_user
-       cd /vagrant
-       tar -xvf 2018-user-home-dir.tar.gz -C /
-       cd -
-       ;;
+        create_user
+        cd /vagrant
+        tar -xvf 2018-user-home-dir.tar.gz -C /
+        cd -
+        ;;
     * )
        echo "error: invalid arguments provided"
        help
