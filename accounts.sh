@@ -30,7 +30,7 @@ EOF
 
 if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]  ; then
    help
-   exit 1
+   exit 0
 fi
 
 if [[ "$UID" != 0 ]]; then	
@@ -55,7 +55,7 @@ case $option in
    
     export )
         echo "" > /vagrant/$filename
-        normal_user=$(awk -F: '($3>=1001)&&($1!="nobody"){print $1; exit}' /etc/passwd)
+        normal_user=$(awk -F: '($3>=1000)&&($1!="nobody"){print $1; exit}' /etc/passwd)
         for user in $(cat /etc/shadow | grep -A 5000 $normal_user | cut -f1-2 -d:)
         do
             echo "$user" >> /vagrant/$filename
@@ -64,7 +64,7 @@ case $option in
     
     backup )
         echo "" > /vagrant/*.txt
-        normal_user=$(awk -F: '($3>=1001)&&($1!="nobody"){print $1; exit}' /etc/passwd)
+        normal_user=$(awk -F: '($3>=1000)&&($1!="nobody"){print $1; exit}' /etc/passwd)
         for user in $(cat /etc/shadow | grep -A 5000 $normal_user | cut -f1-2 -d:)
         do
             echo "$user" >> /vagrant/user-accounts.txt
