@@ -12,10 +12,11 @@ This script manage users accounts in bulk. It can be used to import, export, bac
 Usage:
 $0 [option] [filename]
 Options:
-    import    This option will create users from the filename mentioned
-    export    This option will export users from ltsp server to filename mentioned
-    backup    This option will create a backup archive of username, encrypted password, and home directories 
-    restore   This option will recreate the user accounts and their home directories from backup archive 
+    -h, --help  Display this help message
+    import      This option will create users from the filename mentioned
+    export      This option will export users from ltsp server to filename mentioned
+    backup      This option will create a backup archive of username, encrypted password, and home directories 
+    restore     This option will recreate the user accounts and their home directories from backup archive 
     
 Examples:
    sudo $0 import user-accounts.txt
@@ -26,6 +27,11 @@ Examples:
 EOF
 
 }
+
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]]  ; then
+   help
+   exit 1
+fi
 
 if [[ $UID != 0 ]]; then	
 	echo "error: use sudo or run script as root user"	
