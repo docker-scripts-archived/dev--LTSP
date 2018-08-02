@@ -75,13 +75,23 @@ case $1 in
         ;;
     
     restore )
-        create_user
         cd /vagrant
-        tar -xvf 2018-user-home-dir.tar.gz -C /
+        tar -xvf $filename -C /
         cd -
+        for line in $(cat *.txt)
+        do
+            IFS=":"
+            read -ra ARRAY <<<"$line"
+            user=${ARRAY[0]}
+            pass=${ARRAY[1]}
+            echo adding user $user with password $pass 
+            useradd $user -d /home/$user -m -s /bin/bash -p $pass
+            cp -r /etc/skel/. /home/$user
+        done
         ;;
+        
     * )
-       echo "error: invalid arguments provided"
-       help
-       ;;
+        echo "error: invalid arguments provided"
+        help
+        ;;
 esac
