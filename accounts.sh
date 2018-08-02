@@ -41,7 +41,16 @@ fi
 
 case $1 in
     import )
-        create_user
+        for line in $(cat $filename)
+        do
+            IFS=":"
+            read -ra ARRAY <<<"$line"
+            user=${ARRAY[0]}
+            pass=${ARRAY[1]}
+            echo adding user $user with password $pass 
+            useradd $user -d /home/$user -m -s /bin/bash
+            echo "$user:$pass" | chpasswd
+        done
         ;;
    
     export )
