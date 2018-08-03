@@ -2,7 +2,6 @@
 
 option="$1"
 filename="$2"
-normal_user="$(awk -F: '($3>=1000)&&($1!="nobody"){print $1; exit}' /etc/passwd)"
 
 help() {
     cat <<EOF
@@ -56,7 +55,7 @@ case $option in
    
     export )
         echo "" > /vagrant/$filename
-        for user in $(cat /etc/shadow | grep -A 5000 $normal_user | cut -f1-2 -d:)
+        for user in $(cat /etc/shadow | cut -d: -f1-2 | grep -v -e '*' -e '!' -e 'vagrant')
         do
             echo "$user" >> /vagrant/$filename
         done
@@ -64,7 +63,7 @@ case $option in
     
     backup )
         echo "" > /vagrant/*.txt
-        for user in $(cat /etc/shadow | grep -A 5000 $normal_user | cut -f1-2 -d:)
+        for user in $(cat /etc/shadow | cut -d: -f1-2 | grep -v -e '*' -e '!' -e 'vagrant')
         do
             echo "$user" >> /vagrant/user-accounts.txt
         done
