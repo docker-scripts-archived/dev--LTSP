@@ -28,7 +28,11 @@ echo 'IPAPPEND=3' >> /etc/ltsp/update-kernels.conf
 /usr/share/ltsp/update-kernels
 
 # Configure dnsmasq
-ltsp-config dnsmasq
+if [[ ${STANDALONE,,} == "yes" ]]; then
+    ltsp-config dnsmasq --enable-dns
+else
+    ltsp-config dnsmasq
+fi
 
 # enabling password authentication 
 sed -i /etc/ssh/sshd_config \
