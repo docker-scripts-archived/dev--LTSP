@@ -1,72 +1,58 @@
 # Virtual LTSP Server
 
 ## Description
-Virtual LTSP server project automates installation and configuration of LTSP with vagrant and/or docker-scripts. 
-[LTSP](http://www.ltsp.org/) allows computers of a LAN to boot through network from a single server. Same LTSP server can be setup on VirtualBox. So we have created a provisioner script to install and configure `LTSP` to a vagrant box. Also created other scripts to create LTSP clients and one to start a proxy dhcp server. 
+Virtual LTSP server project automates installation and configuration of LTSP server with vagrant. It is the easiest way to set up LTSP yet. 
+[LTSP](http://www.ltsp.org/) allows computers of a LAN to boot through the network from a single server. Same LTSP server can be set up on VirtualBox. So we have created a provisioner script to install and configure LTSP to a vagrant box. Also created other scripts to create LTSP clients, start a proxy DHCP server, etc.
+
+LTSP server has two main modes of operation: standalone and normal. These depend on whether we have a DHCP server in the LAN or not.
+
+1. **Standalone** means that the LTSP server provides DHCP services to the clients. Clients have access to the internet through LTSP server. Hence the LTSP server is the gateway to the internet. Note that in case of standalone mode the router should be configured to not provide DHCP services. Otherwise, the setup will not work since the client will not be able to get ip address.
+
+1. **Normal** _(proxy DHCP)_ means that the LTSP server does not provide DHCP service to the clients. Instead there is an existing DHCP server in the LAN that does this. In this case, the LTSP server usually is not the gateway to the Internet. Here LTSP server just provides booting information.
+
+You can refer to wiki pages for more information on modes of operation - [dev--LTSP/wiki/Mode-of-operation-LTSP](https://github.com/docker-scripts/dev--LTSP/wiki/LTSP-Modes-of-Operation)
 
 ## Prerequisites
 For this project, there are two requirements. Also, it is recommended to use the latest version for these two -
 
-- [Virtualbox](http://virtualbox.org) 
-- [Vagrant](https://vagrantup.com)
+- **[Virtualbox](https://www.virtualbox.org/)** - Installation is different in different distributions. Best option is to visit - https://www.virtualbox.org/wiki/Downloads
+- **[Vagrant](https://www.vagrantup.com/)** - you may install latest version of vagrant by -
+   
+   ```
+   VAGRANT_VERSION=2.1.2
+   wget https://releases.hashicorp.com/vagrant/${VAGRANT_VERSION}/vagrant_${VAGRANT_VERSION}_x86_64.deb
+   sudo dpkg -i vagrant_${VAGRANT_VERSION}_x86_64.deb
+   ```
+## Clone the repository
+   
+   ```
+   git clone https://github.com/docker-scripts/dev--LTSP.git -b bionic
+   cd dev--LTSP
+   ```
 
-## Modes of Operation
+## Installation for normal mode
+1. Open `settings.sh` 
+1. Set the interface you want to use by changing `LAN_IF` and save it.
+1. Do a `vagrant up` 
+1. You will have ltsp-server setup in normal mode
 
-LTSP has 2 modes of operation of LTSP server. Standalone and Normal. These depend on whether we have a DHCP server on the LAN or not.
-
-1. [**Standalone**](https://github.com/docker-scripts/dev--LTSP/wiki/LTSP-Modes-of-Operation#standalone) means that the LTSP server also provides DHCP service to the clients. The vagrant boxes have NAT configured Inside them. Same can be used clients can have access to internet through LTSP server, gateway for the internet.
-
-1. [**Normal**](https://github.com/docker-scripts/dev--LTSP/wiki/LTSP-Modes-of-Operation#normal) means that the LTSP server does not provide IP addresses (DHCP service) to the clients, but there is another (existing) DHCP server on the LAN that does this. In this case the LTSP server usually is not the gateway to the Internet.
-
-## Installation
-
-- Clone the repository
-	```
-	git clone https://github.com/docker-scripts/dev--LTSP.git -b bionic
-	cd dev--LTSP
-	```
-- Configure the `settings.sh` script. You can set the mode of operation with `STANDALONE`, IP address with `LAN_IP`, Interface with `LAN_IF`. Also add extra packages if you want.
-- Settings will be loaded by `Vagrantfile`, `install.sh` and `client.sh`.
-- You can do a `vagrant up` and LTSP will be installed and configured for you.
-- Then start client with `./client.sh` and it will boot from the ltsp server.
-- Then you can stop by `vagrant halt` and also destroy by `vagrant destroy`.
+## Installation for standalone mode  
+1. Open `settings.sh`
+1. Change the `STANDALONE` variable to `yes`
+1. Change the `LAN_IP` variable to whichever IP address you want for ltsp server and save it.
+1. Do a `vagrant up` from the terminal
+1. You will have ltsp-server setup in standalone mode.
 
 ## Automated testing
+Virtual ltsp server project supports automated testing. It is meant to be done with a single computer. `test.sh` script is used for that. 
+```
+./test.sh [start/stop] 
+```
+- Change the `STANDALONE` to `yes` or `no` to set the mode of operation of ltsp server.
+- do a `./test.sh start` to start testings. you should see client booting from the server at the end of it
+- do a `./test.sh stop` to stop after the test is completed. It will destroy virtual interface, ltsp-server and client.
 
-Automated testing is mostly done with `test.sh` script.
-    ```
-    ./test.sh [start/stop]
-    ```
-You can do automated testing in following steps -
-- Do a `./test.sh start`. It will create virtual network for testing, launch ltsp server and then starts ltsp client.​
-- You should see a client booting up from the ltsp-server.
-- After this you can do `./test.sh stop` to destroy dhcp-server, ltsp-server, virtual network interface and client.
-
-## Using Virtual LTSP on real LAN
-
-Virtual LTSP can be used on real LAN as well. In it the ltsp client and dhcp server are real ones. Steps to install ltsp are same. Set `LAN_IF` to network interface connected to the LAN. Then do a `vagrant up` to install and configure LTSP. 
-
-### Client Installation
-On the client side it is recommended to use run `client.sh` script to create LTSP client. Since it is much easier to do with script and in `setting.sh` set `LAN_IF` to network interface connected to the LAN. Then just run the script and ltsp client will be automatically created and started for you.
-
- If you wish you can create clients with the help of virtualbox
-
-- Open virtualbox. Click `new`.
-- Give your client a name.
-- Click `next`.
-- In Memory size set the RAM you want for your client and click `next`.
-- Then in the hard disk selected **do not add a virtual hard disk.**
-- Finally hit `create`.
-- This will create a LTSP client.
-- After that go to settings. Select system setting and in boot order selected `network` checkbox. This will allow a network boot.
-- Then go to network and selected a bridged adapter and select network interface connected to LAN.
-- Click advanced and set `promiscuous mode` to `allow all`.
-- Click `OK`.
-- Then click `start`. Now you can boot from virtual LTSP server.
-
-Or you can have an actual ltsp client that works on network boot as it has no hard drive.
-
-## Commands
+## Vagrant Commands
 
 - `vagrant up`
 
@@ -74,27 +60,21 @@ Or you can have an actual ltsp client that works on network boot as it has no ha
 	
 - `vagrant status`
 
-	This will tell the current state of vagrant box. Whether it is running, powered off or not created.
+	This will tell the current state of the vagrant box. Whether it is running, powered off or not created.
+	
+- `vagrant provision`
+
+   This will run the provisioner script defined.
 	
 - `vagrant halt`
 
-	This is stop the ltsp server vagrant box.
+	This stops the ltsp server vagrant box.
 	
 - `vagrant destroy`
 
-	This command will compeletly destroy the ltsp server.
+	This command will completely destroy the ltsp server.
+	
+More information about vagrant can be found on their official documentation - https://www.vagrantup.com/docs/	
 
-You may refer to wiki page for more details - https://github.com/docker-scripts/dev--LTSP/wiki
-
-## For developers and testers
-If you are tester or developer or contributor to this project then you can install a plugin named `vagrant-cachier` that will reduce the time for installation of LTSP. For this plugin to work you need to make sure that firewall is turned off. Also packages like `nfscommon` and `nfs-kernel-server` are installed. If not you can install them by -
-```
-sudo apt install nfs-kernel-server nfs-common
-```
-
-Then You can install the plugin by - 
-```
-vagrant plugin install vagrant-cachier
-```
-The plugin will simply store all your packages installed in `~/.vagrant.d/cache`. So that they dont need to be downloaded again from the internet next time you do a `vagrant up`. You can read more about this plugin here - https://github.com/fgrehm/vagrant-cachier
+Please refer to the wiki page for more details regarding Virtual LTSP Server project - https://github.com/docker-scripts/dev--LTSP/wiki
 
