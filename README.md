@@ -35,13 +35,16 @@ For this project, there are two requirements. Also, it is recommended to use the
 1. Set the interface you want to use by changing `LAN_IF` and save it.
 1. Do a `vagrant up` 
 1. You will have ltsp-server setup in normal mode
+1. Do a `./client.sh` to start the virtual client
 
 ## Installation for standalone mode  
 1. Open `settings.sh`
 1. Change the `STANDALONE` variable to `yes`
+1. Set the interface you want to use by changing `LAN_IF` and save it.
 1. Change the `LAN_IP` variable to whichever IP address you want for ltsp server and save it.
 1. Do a `vagrant up` from the terminal
 1. You will have ltsp-server setup in standalone mode.
+1. Do a `./client.sh` to start the virtual client
 
 ## Automated testing
 Virtual ltsp server project supports automated testing. It is meant to be done with a single computer. `test.sh` script is used for that. 
