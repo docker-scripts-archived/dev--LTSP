@@ -1,6 +1,7 @@
 #/bin/bash -x
 
 source /vagrant/settings.sh
+NETWORK="$(echo $LAN_IP | cut -d'.' -f1-3)"
 
 # installation
 apt --yes update
@@ -12,11 +13,7 @@ INTERNET=$(ip route | grep default | cut -d' ' -f5)
 LOCAL=$(ip route | grep -v default | cut -d' ' -f3 | grep -v $INTERNET | head -1)
 
 # configuration
-cat <<EOT >> /etc/dnsmasq.conf
-enable-tftp
-pxe-service=x86PC, "Install Linux", /ltsp/amd64/pxelinux, $LAN_IP
-dhcp-range=${LAN_IP},proxy  
-EOT
+echo "dhcp-range=${NETWORK}.20,${NETWORK}.250,8h" >> /etc/dnsmasq.conf
 
 # restarting service	
 service dnsmasq restart
