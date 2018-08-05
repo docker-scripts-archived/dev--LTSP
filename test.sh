@@ -29,7 +29,7 @@ if [[ "$DISTRO" == "Ubuntu" ]] || [[ "$DISTRO" == "LinuxMint" ]] ; then
     use_sudo="sudo"
 fi
 
-if [[ "$use_sudo" == "" ]] && [[ "$EUID" != 0 ]] ; then
+if [[ "$use_sudo" == "" ]] && [[ "$UID" != 0 ]] ; then
     echo "error: execute script as root user"
     exit 1
 fi
