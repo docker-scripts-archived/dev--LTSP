@@ -13,11 +13,17 @@ This script creates virtual network adapter which can be used for bridging
 Usage:
 $0 [options]
 Options:
-    start   This option will create virtual adapter
-    stop    This option will destory virtual adapter
+    -h, --help  Display this help menu
+    start       This option will create virtual adapter
+    stop        This option will destory virtual adapter
     
 _EOF
 }
+
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] ; then
+    help
+    exit 0
+fi
 
 if [[ "$DISTRO" == "Ubuntu" ]] || [[ "$DISTRO" == "LinuxMint" ]] ; then
     use_sudo="sudo"
