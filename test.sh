@@ -12,11 +12,23 @@ This script creates virtual network adapter which can be used for bridging
 Usage:
 $0 [options]
 Options:
-    start   This option will create virtual adapter
-    stop    This option will destory virtual adapter
+    -h, --help  Display this help menu
+    start       This option will create virtual adapter
+    stop        This option will destory virtual adapter
     
 _EOF
 }
+
+if [[ -z $(which sudo) ]]; then
+    echo "Please install sudo first. For example see this tutorial:"
+    echo "https://www.vultr.com/docs/how-to-use-sudo-on-debian-centos-and-freebsd"
+    exit 1
+fi
+
+if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] ; then
+    help
+    exit 0
+fi
 
 case $1 in
     start )
