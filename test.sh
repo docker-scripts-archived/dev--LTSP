@@ -19,6 +19,12 @@ Options:
 _EOF
 }
 
+if [[ -z $(which sudo) ]]; then
+    echo "Please install sudo first. For example see this tutorial:"
+    echo "https://www.vultr.com/docs/how-to-use-sudo-on-debian-centos-and-freebsd"
+    exit 1
+fi
+
 if [[ "$1" == "-h" ]] || [[ "$1" == "--help" ]] ; then
     help
     exit 0
