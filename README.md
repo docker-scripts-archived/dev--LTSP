@@ -78,3 +78,9 @@ More information about vagrant can be found on their official documentation - ht
 
 Please refer to the wiki page for more details regarding Virtual LTSP Server project - https://github.com/docker-scripts/dev--LTSP/wiki
 
+## Credits
+This project is developed and maintained by [Deepanshu Gajbhiye](https://github.com/d78ui98). It is one of the [Google Summer of code](https://summerofcode.withgoogle.com/projects/#5506177505427456) Project. Here is the final report for it:
+https://gist.github.com/d78ui98/138c986dffc4d7a094e3ec1c63b545ba
+
+I would like to thank [Dashamir Hoxha](https://github.com/dashohoxha) and [Akash Shende](https://github.com/akash0x53) for guiding, helping and mentoring for this project.
+
