@@ -40,7 +40,7 @@ For this project, there are two requirements. Also, it is recommended to use the
 ## Installation for standalone mode  
 1. Open `settings.sh`
 1. Change the `STANDALONE` variable to `yes`
-1. Set the interface you want to use by changing `LAN_IF` and save it.
+1. Set the interface you want to use by changing `LAN_IF`
 1. Change the `LAN_IP` variable to whichever IP address you want for ltsp server and save it.
 1. Do a `vagrant up` from the terminal
 1. You will have ltsp-server setup in standalone mode.
@@ -80,4 +80,10 @@ Virtual ltsp server project supports automated testing. It is meant to be done w
 More information about vagrant can be found on their official documentation - https://www.vagrantup.com/docs/	
 
 Please refer to the wiki page for more details regarding Virtual LTSP Server project - https://github.com/docker-scripts/dev--LTSP/wiki
+
+## Credits
+This project is developed and maintained by [Deepanshu Gajbhiye](https://github.com/d78ui98). It is one of the [Google Summer of code](https://summerofcode.withgoogle.com/projects/#5506177505427456) Project. Here is the final report for it: <br>
+https://gist.github.com/d78ui98/138c986dffc4d7a094e3ec1c63b545ba
+
+I would like to thank [Dashamir Hoxha](https://github.com/dashohoxha) and [Akash Shende](https://github.com/akash0x53) for guiding, helping and mentoring for this project.
 
